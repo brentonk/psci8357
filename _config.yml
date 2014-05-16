@@ -3,20 +3,3 @@
 # Read the friendly manual: https://help.github.com/articles/using-jekyll-with-pages
 
 
-# Course-site specific configuration:
-course:
-  # E.g., ENGL 536
-  number:
-  name:
-  # Keep the description brief, about 140 chars
-  description:
-  # E.g., Spring 2013:
-  term:
-  instructor:
-    name:
-    office:
-    office_hours:
-    email:
-    phone:
-    # No @ before your username; e.g., twitter, not @twitter
-    twitter:
