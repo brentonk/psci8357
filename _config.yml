@@ -5,11 +5,6 @@
 
 # Course-site specific configuration:
 course:
-  # Enter a base path if needed; not necessary for testing at localhost:4000/
-  # or if your site is hosted at a simple URL like http://example.com/
-  # But, if something comes after the .com/, you should enter it here.
-  # E.g., for http://example.com/530/ you'd enter 530/ for base_path:
-  base_path:
   # E.g., ENGL 536
   number:
   name:

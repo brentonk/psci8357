@@ -1,3 +1,7 @@
+<!-- from http://stackoverflow.com/a/14254928/143383 -->
+{% assign lvl = page.url | append:'X' | split:'/' | size %}
+{% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,11 +14,11 @@
   <meta name="author" content="{{ site.course.instructor.name }}">
   <meta name="description" content="{{ site.course.description }}">
 
-  <link rel="stylesheet" media="screen" href="/{{site.course.base_path}}assets/css/screen.css">
-  <link rel="stylesheet" media="print" href="/{{site.course.base_path}}assets/css/print.css">
+  <link rel="stylesheet" media="screen" href="{{relative}}assets/css/screen.css">
+  <link rel="stylesheet" media="print" href="{{relative}}assets/css/print.css">
 
   <!--[if lt IE 9]>
-    <script src="/{{site.course.base_path}}assets/js/html5.js"></script>
+    <script src="{{relative}}assets/js/html5.js"></script>
   <![endif]-->
 
 </head>
@@ -42,7 +46,7 @@
 
 <!--jQuery & Twitter Bootstrap JavaScript-->
 <script type="javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script type="javascript" src="/{{site.course.base_path}}assets/js/bootstrap.min.js"></script>
+<script type="javascript" src="{{relative}}assets/js/bootstrap.min.js"></script>
 
 </body>
 </html>
