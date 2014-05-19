@@ -6,15 +6,14 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="{{ site.data.course.instructor.name }}">
+  <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.data.course.description }}{% endif %}">
+
   <title>{{site.data.course.name}}: {{page.title}}</title>
 
-  <!--Set the viewport to handle responsive design-->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <meta name="author" content="{{ site.data.course.instructor.name }}">
-  <meta name="description" content="{{ site.data.course.description }}">
-
-  <link rel="stylesheet" href="{{relative}}assets/css/bootstrap.min.css">
+  <link href="{{relative}}assets/css/bootstrap.min.css" rel="stylesheet">
 
   <!--[if lt IE 9]>
     <script src="{{relative}}assets/js/html5shiv.js"></script>
