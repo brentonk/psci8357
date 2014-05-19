@@ -34,78 +34,7 @@
   like
 * `README.md`: You’re looking at it.
 
-## Setup
-
-### Mac:
-* Install TextWrangler (available on the Mac app store, or
-  [here](http://www.barebones.com/products/textwrangler/download.html))
-* Install the
-  [TextWrangler command-line tools](http://pine.barebones.com/files/tw-cmdline-tools.zip)
-* Install [the Rails Installer for OS X](http://railsinstaller.org/)
-  (Stolley will have a thumb drive you can just grab it from at the WIDE-EMU workshop).
-* If you don’t have a GitHub account,
-  [sign up for one](https://github.com/signup/free).
-* Create SSH keys, if you don’t have them yet, and add them to GitHub. If running
-        $ cat ~/.ssh/id_rsa.pub
-  in your terminal doesn’t result in output, follow
-  [these instructions](https://help.github.com/articles/generating-ssh-keys),
-  specifically Steps 3, 4, and 5.
-* [Fork this repository](https://github.com/karlstolley/github-course-starter/fork)
-
-### Windows
-* Install [Notepad++](http://download.tuxfamily.org/notepadplus/6.2/npp.6.2.bin.zip);
-  just extract the .zip file to your Desktop, and run the ``notepad++.exe`` file.
-* Install [the Rails Installer for Windows](http://railsinstaller.org/)
-  (Stolley will have a thumb drive you can just grab it from at the WIDE-EMU workshop).
-* If you don’t have a GitHub account,
-  [sign up for one](https://github.com/signup/free).
-* Create SSH keys and add them to your GitHub account, following
-  [these instructions](https://help.github.com/articles/generating-ssh-keys#platform-windows),
-  specifically Steps 3, 4, and 5.
-* [Fork this repository](https://github.com/karlstolley/github-course-starter/fork)
-
-## Workshop Steps
-
-* Open up your Terminal (Mac) or Command Prompt (Win) and create a directory for your
-  course websites:
-        $ mkdir Courses
-* Change into that directory:
-        $ cd Courses
-* Clone your forked repository by running `$ git clone` followed by the SSH link from your
-  forked copy of this repository
-* Do lots of things to make your site; run
-        $ git add FILENAMES
-  replacing FILENAMES with a space-separated list of files and directories to add,
-  followed by
-        $ git commit -m "Descriptive message..."
-  replacing `Descriptive message...` with a message describing the change to the files
-  you added.
-* Create [a new GitHub repo for your actual site](https://github.com/new); the name will
-  determine the URL
-* Remove the original remote of your forked repo
-        $ git remote rm origin
-* Add a new remote to your forked repo by running
-        $ git remote add origin YOURURL
-  replacing `YOURURL` with the SSH URL from your newly created remote
-* Push your course site to make it live
-        $ git push origin gh-pages
-* Make more changes; commit them; then run `git push origin gh-pages` to make them live
 
 
-## Using a custom domain
-* Instead of using a domain name like `http://username.github.com/repo-name/`, you can use
-  a custom domain or subdomain. Use your domain registrar’s control panel to set up either a
-  CNAME or A Record, as
-  [described here](https://help.github.com/articles/setting-up-a-custom-domain-with-pages)
-* Then, create a text file called `CNAME` containing the domain or subdomain you set up with your
-  domain registrar. For example, if you set up a CNAME record for `http://course.example.com/``,
-  the contents of your CNAME file will be
-        course.example.com
-  Add the file to your repository (`$ git add CNAME` &
-  `$ git commit -m "Added CNAME file for my custom domain"`)
-  Give it time; it can take several hours for nameservers to correctly route
-  your domain/subdomain to GitHub.
 
-## Desperate cries for help
-* Contact Karl via email at karl.stolley@gmail.com or on Twitter at
-  [@karlstolley](http://twitter.com/karlstolley)
+
