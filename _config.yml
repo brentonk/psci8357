@@ -3,3 +3,9 @@
 # Read the friendly manual: https://help.github.com/articles/using-jekyll-with-pages
 
 
+defaults:
+  -
+    scope:
+      path: ""  # All files
+    values:
+      layout: default
