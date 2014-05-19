@@ -1,0 +1,17 @@
+/* Don't allow text to get too wide */
+.container {
+    width: auto;
+    max-width: 800px;
+    padding: 0 15px;
+}
+/* Keep the footer at the bottom of the page */
+html {
+    position: relative;
+    min-height: 100%;
+}
+#footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: 5px;
+}

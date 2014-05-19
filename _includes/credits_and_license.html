@@ -1,8 +1,11 @@
-<p>
-  Content by {{ site.data.course.instructor.name }}.
-  Licensed under
-  <a href="http://creativecommons.org/licenses/by-nc/2.0/" rel="licence">Creative Commons BY-NC 2.0</a>.
-  Created with <a href="https://github.com/mojombo/jekyll">Jekyll</a>
-  and <a href="http://twitter.github.com/boostrap/">Twitter Bootstrap</a>.
-  Hosted on <a href="http://github.com/">GitHub</a>.
-</p>
+Content by {% if site.data.course.instructor.url %}<a href="{{site.data.course.instructor.url}}">{{site.data.course.instructor.name}}</a>{% else %}{{site.data.course.instructor.name}}{% endif %}.
+
+{% if site.data.license %}
+  Content licensed under <a href="{{site.data.license.url}}">{{site.data.license.name}}</a>.
+{% endif %}
+
+Created with <a href="http://jekyllrb.com/">Jekyll</a> and <a href="http://getbootstrap.com/">Bootstrap</a>.
+
+{% if site.github %}
+  Hosted <a href="{{site.github.repository_url}}">on Github</a>.
+{% endif %}

@@ -11,9 +11,10 @@
   <meta name="author" content="{{ site.data.course.instructor.name }}">
   <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.data.course.description }}{% endif %}">
 
-  <title>{{site.data.course.name}}: {{page.title}}</title>
+  <title>{{site.data.course.number}} &mdash; {{page.title}}</title>
 
   <link href="{{relative}}assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{{relative}}assets/css/course-site-custom.css" rel="stylesheet">
 
   <!--[if lt IE 9]>
     <script src="{{relative}}assets/js/html5shiv.js"></script>
@@ -23,19 +24,60 @@
 </head>
 <body>
 
-<article class="container-fluid">
+  <!-- Static navbar -->
+  <div class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{{relative}}index.html">{{site.data.course.number}}</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li{% if page.category == "home" %} class="active"{% endif %}><a href="{{relative}}index.html">Home</a></li>
+          <li{% if page.category == "syllabus" %} class="active"{% endif %}><a href="{{relative}}syllabus.html">Syllabus</a></li>
+          <li class="dropdown{% if page.category == "note" %} active{% endif %}">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Notes <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              {% if site.notes[0] %}
+              {% for note in site.notes %}
+              <li><a href="{{relative}}{{note.url}}">{{note.title}}</a></li>
+              {% endfor %}
+              {% else %}
+              <li class="dropdown-header">No notes posted</li>
+              {% endif %}
+            </ul>
+          </li>
+          <li class="dropdown{% if page.category == "assignment" %} active{% endif %}">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Assignments <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              {% if site.assignments[0] %}
+              {% for assignment in site.assignments %}
+              <li><a href="{{relative}}{{assignment.url}}">{{assignment.title}}</a></li>
+              {% endfor %}
+              {% else %}
+              <li class="dropdown-header">No assignments posted</li>
+              {% endif %}
+            </ul>
+          </li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
 
-
-  <section id="content">
+  <div class="container">
     {{content}}
-  </section>
 
-
-  <footer>
-    {% include credits_and_license.html %}
-  </footer>
-
-<article>
+  </div>
+    <div id="footer">
+      <div class="container text-muted small">
+        {% include credits_and_license.html %}
+      </div>
+    </div>
 
 <!--jQuery & Twitter Bootstrap JavaScript-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
