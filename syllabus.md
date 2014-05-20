@@ -1,6 +1,7 @@
 ---
 title: Syllabus
 category: syllabus
+layout: default
 ---
 
 ## Syllabus

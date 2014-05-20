@@ -1,6 +1,7 @@
 ---
 title: Home
 category: home
+layout: default
 ---
 
 ## {{site.data.course.name}}
