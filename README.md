@@ -2,8 +2,10 @@
 
 This is a template for an academic course website generated using
 [Jekyll](http://jekyllrb.com/) and designed in
-[Bootstrap](http://getbootstrap.com).  It is compatible with hosting on
-[Github Pages](https://pages.github.com/).
+[Bootstrap](http://getbootstrap.com).  It will be compatible with hosting on
+[Github Pages](https://pages.github.com/) when Github upgrades to
+[Jekyll 2.0.0](https://github.com/jekyll/jekyll/releases/tag/v2.0.0) or
+greater.
 
 A sample course page formatted via this template can be viewed at
 http://brentonk.github.io/github-course-starter/.
@@ -65,11 +67,6 @@ Your actual course content goes in the following directories and files:
     ```
 
   and similarly for each assignment.
-
-    * Beyond this, Github Pages uses
-      [an old version of Jekyll](https://pages.github.com/versions/) (1.5.1,
-      as of da9e4c01d6bae07fc5bf135c43c730e148d6b77a) that doesn't support
-      front-matter defaults in the first place
 
 * Filenames for notes and assignments must correspond to the order you wish
   them to appear in the navbar, hence `notes/01-first-note.md`,
