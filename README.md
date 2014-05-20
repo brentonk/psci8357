@@ -34,7 +34,8 @@ Your actual course content goes in the following directories and files:
 * `_assignments/`: a [collection](http://jekyllrb.com/docs/collections/)
   containing assignments in Markdown format
 * `_data/`: data files in [YAML](http://www.yaml.org/) format
-    * `course.yml`: information about the course and instructor
+    * `course.yml`: information about the course
+    * `instructor.yml`: information about the instructor
     * `license.yml`: (optional) information about the license for course
       content (e.g., Creative Commons)
 * `_notes/`: a [collection](http://jekyllrb.com/docs/collections/) containing

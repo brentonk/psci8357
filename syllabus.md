@@ -7,7 +7,7 @@ layout: default
 ## Syllabus
 
 **{{site.data.course.number}}**: {{site.data.course.name}}  
-**Instructor**: {{site.data.course.instructor.name}}  
+**Instructor**: {{site.data.instructor.name}}  
 (etc)
 
 ### Required Books
