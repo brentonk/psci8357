@@ -2,6 +2,8 @@
 # Note: Jekyll configuration settings may not be respected by GitHub Pages.
 # Read the friendly manual: https://help.github.com/articles/using-jekyll-with-pages
 
+markdown: kramdown
+
 collections:
   notes:
     output: true
