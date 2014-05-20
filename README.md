@@ -70,7 +70,7 @@ Your actual course content goes in the following directories and files:
   and similarly for each assignment.
 
 * Filenames for notes and assignments must correspond to the order you wish
-  them to appear in the navbar, hence `notes/01-first-note.md`,
-  `notes/02-second-note.md`, and so on.  It is probably possible to change
+  them to appear in the navbar, hence `_notes/01-first-note.md`,
+  `_notes/02-second-note.md`, and so on.  It is probably possible to change
   this by including a custom ordering variable in the front matter of each
   note/assignment.
