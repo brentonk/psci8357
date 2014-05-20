@@ -1,5 +1,9 @@
 ---
-title: Calendar
+title: Home
+category: home
 ---
 
-Start your course Calendar here...or perhaps start with some kind of welcome statement.
+## {{site.data.course.name}}
+
+This is the course website for **{{site.data.course.number}}**:
+{{site.data.course.name}}.
