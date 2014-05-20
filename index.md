@@ -16,8 +16,9 @@ the semester.
 
 ### Course Information
 
-**Term:** {{site.data.course.term}}  
-**Time and Place:** {{site.data.course.time}}, {{site.data.course.room}}  
-**Instructor:** {{site.data.instructor.name}}
-(`{{site.data.instructor.email}}`)  
-**Office Hours:** {{site.data.instructor.office_hours}}, {{site.data.instructor.office}}
+<dl class="dl-horizontal">
+<dt>Term</dt><dd>{{site.data.course.term}}</dd>
+<dt>Time and Place</dt><dd>{{site.data.course.time}}, {{site.data.course.room}}</dd>
+<dt>Instructor</dt><dd markdown="span">{{site.data.instructor.name}} (`{{site.data.instructor.email}}`)</dd>
+<dt>Office Hours</dt><dd>{{site.data.instructor.office_hours}}, {{site.data.instructor.office}}</dd>
+</dl>
