@@ -19,3 +19,13 @@ html {
     width: 100%;
     padding-bottom: 5px;
 }
+/* Make header sizes less ridiculous */
+h1 {
+    font-size: 32px;
+}
+h2 {
+    font-size: 26px;
+}
+h3 {
+    font-size: 20px;
+}

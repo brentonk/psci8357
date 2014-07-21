@@ -4,7 +4,7 @@ category: home
 layout: default
 ---
 
-## {{site.data.course.number}}: {{site.data.course.name}}
+# {{site.data.course.number}}: {{site.data.course.name}}
 
 <p class="lead">{{site.data.course.description}}</p>
 
@@ -14,7 +14,7 @@ Welcome to the course website for {{site.data.course.number}}.  The
 the semester.
 
 
-### Course Information
+## Course Information
 
 <dl class="dl-horizontal">
 <dt>Term</dt><dd>{{site.data.course.term}}</dd>

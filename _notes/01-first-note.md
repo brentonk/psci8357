@@ -4,6 +4,6 @@ layout: note
 title: First set of notes
 ---
 
-### Heading
+## Heading
 
 This is the first set of notes.

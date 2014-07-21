@@ -4,7 +4,7 @@ title: Course Notes
 layout: default
 ---
 
-## Course Notes
+# Course Notes
 
 {% for note in site.notes %}
 * [{{note.title}}]({{note.url}})  
