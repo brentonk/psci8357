@@ -29,3 +29,12 @@ h2 {
 h3 {
     font-size: 20px;
 }
+/* Reduce size of description list descriptions */
+@media (min-width: 768px) {
+    .dl-horizontal dt {
+        width: 100px;
+    }
+    .dl-horizontal dd {
+        margin-left: 120px;
+    }
+}
