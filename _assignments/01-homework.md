@@ -1,6 +1,4 @@
 ---
-category: assignment
-layout: assignment
 title: First Assignment
 ---
 

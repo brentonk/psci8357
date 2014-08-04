@@ -1,6 +1,4 @@
 ---
-category: note
-layout: note
 title: More notes
 ---
 

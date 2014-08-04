@@ -1,11 +1,9 @@
 ## About
 
 This is a template for an academic course website generated using
-[Jekyll](http://jekyllrb.com/) and designed in
-[Bootstrap](http://getbootstrap.com).  It will be compatible with hosting on
-[Github Pages](https://pages.github.com/) when Github upgrades to
-[Jekyll 2.0.0](https://github.com/jekyll/jekyll/releases/tag/v2.0.0) or
-greater.
+[Jekyll](http://jekyllrb.com/), designed in
+[Bootstrap](http://getbootstrap.com), and compatible with hosting on
+[Github Pages](https://pages.github.com/).
 
 A sample course page formatted via this template can be viewed at
 http://brentonk.github.io/github-course-starter/.
@@ -55,19 +53,6 @@ Your actual course content goes in the following directories and files:
 
 
 ## Issues
-
-* Jekyll currently does not allow defaults to be set for collections (though
-  this may change soon; see jekyll/jekyll#2405 and jekyll/jekyll#2419), so the
-  front-matter for each note must contain
-
-    ```yaml
-    ---
-    category: note
-    layout: note
-    ---
-    ```
-
-  and similarly for each assignment.
 
 * Filenames for notes and assignments must correspond to the order you wish
   them to appear in the navbar, hence `_notes/01-first-note.md`,
