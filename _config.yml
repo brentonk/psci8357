@@ -2,7 +2,7 @@
 # Note: Jekyll configuration settings may not be respected by GitHub Pages.
 # Read the friendly manual: https://help.github.com/articles/using-jekyll-with-pages
 
-baseurl: "http://bkenkel.com/github-course-starter"  # Remember to replace!
+baseurl: "/github-course-starter"  # Replace with name of repo
 
 markdown: kramdown
 
