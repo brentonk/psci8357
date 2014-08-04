@@ -1,6 +1,4 @@
 ---
-category: note
-layout: note
 title: First set of notes
 ---
 
