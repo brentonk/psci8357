@@ -20,6 +20,9 @@ html {
     padding-bottom: 5px;
 }
 /* Make header sizes less ridiculous */
+h1.page-title {
+    font-size: 40px;
+}
 h1 {
     font-size: 32px;
 }
