@@ -14,7 +14,8 @@ http://brentonk.github.io/github-course-starter/.
 The template is in the following directories and files.  Further explanation
 of the directory structure is available in
 [the Jekyll documentation](http://jekyllrb.com/docs/structure/).  These can,
-in theory, be left unchanged.
+in theory, be left unchanged (except for the base URL in `_config.yml`, which
+is site-specific).
 
 * `_config.yml`: YAML configuration file for Jekyll
 * `_includes/`: snippets that can be reused throughout the site
