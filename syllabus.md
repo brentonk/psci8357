@@ -1,7 +1,7 @@
 ---
 title: Syllabus
 category: syllabus
-layout: default
+layout: syllabus
 ---
 
 **{{site.data.course.number}}**: {{site.data.course.name}}  
