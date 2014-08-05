@@ -4,4 +4,10 @@ layout: default
 
 <h1 class="page-title">Syllabus</h1>
 
+{% if page.pdf %}
+<p>
+  This syllabus is also available <a href="{{page.pdf}}">in PDF format</a>.
+</p>
+{% endif %}
+
 {{content}}
