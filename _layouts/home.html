@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 class="page-title">{{site.data.course.number}}: {{site.data.course.name}}</h1>
+<h1 class="page-title">{{site.data.course.number}} <small>{{site.data.course.name}}</small></h1>
 
 <div class="row">
   <div class="col-sm-7">
@@ -11,11 +11,23 @@ layout: default
 
   <div class="col-sm-5">
     <dl class="dl-horizontal">
-      <dt>Term</dt><dd>{{site.data.course.term}}</dd>
-      <dt>Classroom</dt><dd>{{site.data.course.room}}</dd>
-      <dt>Time</dt><dd>{{site.data.course.time}}</dd>
-      <dt>Instructor</dt><dd markdown="span">{{site.data.instructor.name}} (<code>{{site.data.instructor.email}}</code>)</dd>
-      <dt>Office Hours</dt><dd>{{site.data.instructor.office_hours}}, {{site.data.instructor.office}}</dd>
+      <dt>Term</dt>
+      <dd>{{site.data.course.term}}</dd>
+
+      <dt>Time</dt>
+      <dd>{{site.data.course.time}}</dd>
+
+      <dt>Place</dt>
+      <dd>{{site.data.course.room}}</dd>
+
+      <dt>Instructor</dt>
+      <dd>{{site.data.instructor.name}}</dd>
+
+      <dt>Email</dt>
+      <dd><code><a href="mailto:{{site.data.instructor.email}}">{{site.data.instructor.email}}</a></code></dd>
+
+      <dt>Office Hours</dt>
+      <dd>{{site.data.instructor.office_hours}}, {{site.data.instructor.office}}</dd>
     </dl>
   </div>
 </div>
