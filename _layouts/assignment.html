@@ -6,4 +6,8 @@ layout: default
 <h1 class="page-title">{{page.title}}</h1>
 {% endif %}
 
+{% if page.pdf %}
+This assignment is also available <a href="{{page.pdf}}">as a PDF</a>.
+{% endif %}
+
 {{content}}
