@@ -19,22 +19,9 @@ html {
     width: 100%;
     padding-bottom: 5px;
 }
-/* Make header sizes less ridiculous */
+/* Use larger header for page titles */
 h1.page-title {
-    font-size: 40px;
-}
-h1 {
-    font-size: 32px;
-}
-h2 {
-    font-size: 26px;
-}
-h3 {
-    font-size: 22px;
-}
-h4 {
-    font-size: 18px;
-    margin-top: 1.25em;
+    font-size: 48px;
 }
 /* Reduce size of description list descriptions */
 @media (min-width: 768px) {
