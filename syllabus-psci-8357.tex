@@ -1,0 +1,65 @@
+\documentclass[12pt,svgnames]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{sectsty}
+\usepackage{float}
+\usepackage[labelsep=period,font=small,labelfont=bf]{caption}
+
+% Line skipping
+\usepackage{parskip}
+
+% No section numbers
+\setcounter{secnumdepth}{0}
+
+% Fonts
+\usepackage[charter]{mathdesign}
+\usepackage[scaled]{helvet}
+\usepackage[scaled=0.5]{beramono}
+\allsectionsfont{\sffamily}
+
+% Hyperref
+\usepackage{hyperref}
+
+% Hyperref
+\hypersetup{%
+  pdfborder = {0 0 0},
+  bookmarksdepth = section,
+  citecolor = DarkGreen,
+  linkcolor = DarkBlue,
+  pagecolor = DarkBlue,
+  urlcolor = DarkGreen,
+  pdfauthor = {Brenton Kenkel (Vanderbilt University)},
+  pdftitle = {PSCI 8357: Statistics for Political Research II},
+  colorlinks = true
+}%
+
+% Consistency with provided Pandoc template
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\begin{document}
+
+\begin{Huge}
+  \textsf{\textbf{PSCI 8357:\\[0.2em] Statistics for Political Research II}}
+\end{Huge}
+
+\textsf{%
+  Vanderbilt University \hfill Professor Brenton Kenkel \\
+  Spring 2016 \hfill \href{mailto:brenton.kenkel@vanderbilt.edu}{brenton.kenkel@vanderbilt.edu} \\
+  R 9:35 a.m.--12:05 p.m. \hfill Office hours: Tuesdays, 10:00 a.m.--12:00 p.m. \\
+  Commons Center 349 \hfill Commons Center 324 \\
+  \url{http://bkenkel.com/psci8357} \\
+  \mbox{}~ \hfill TA: Matt DiLorenzo \\
+  \mbox{} \hfill \href{mailto:matthew.d.dilorenzo@vanderbilt.edu}{matthew.d.dilorenzo@vanderbilt.edu} \\
+  \mbox{}~ \hfill Office hours: TBD \\
+  \mbox{}~ \hfill Commons Center 300
+}
+
+\bigskip
+
+\input{syllabus-body}
+
+\end{document}

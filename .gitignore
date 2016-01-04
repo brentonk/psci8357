@@ -8,3 +8,7 @@ _site/
 
 # e-books
 datastyle.pdf
+
+# Generated TeX output
+*.tex
+!syllabus-psci-8357.tex
