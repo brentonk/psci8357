@@ -1,2 +1,10 @@
+# Jekyll storage
 _site/
+.jekyll-metadata
+
+# Junk files
 .DS_Store
+.dropbox
+
+# e-books
+datastyle.pdf
