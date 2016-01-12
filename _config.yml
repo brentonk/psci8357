@@ -8,11 +8,8 @@ exclude: ["*.rmd"]
 
 markdown: kramdown
 
-collections:
-  notes:
-    output: true
-  assignments:
-    output: true
+kramdown:
+  input: GFM
 
 defaults:
   -
@@ -20,17 +17,3 @@ defaults:
       path: ""  # All files
     values:
       layout: default
-  -
-    scope:
-      path: ""  # All files
-      type: "notes"
-    values:
-      category: note
-      layout: note
-  -
-    scope:
-      path: ""  # All files
-      type: "assignments"
-    values:
-      category: assignment
-      layout: assignment

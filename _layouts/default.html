@@ -36,30 +36,8 @@
         <ul class="nav navbar-nav">
           <li{% if page.category == "home" %} class="active"{% endif %}><a href="{{ site.baseurl }}/index.html">Home</a></li>
           <li{% if page.category == "syllabus" %} class="active"{% endif %}><a href="{{ site.baseurl }}/syllabus.html">Syllabus</a></li>
-          <li class="dropdown{% if page.category == "note" %} active{% endif %}">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Notes <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              {% if site.notes[0] %}
-              {% for note in site.notes %}
-              <li><a href="{{site.baseurl}}{{note.url}}">{{note.title}}</a></li>
-              {% endfor %}
-              {% else %}
-              <li class="dropdown-header">No notes posted</li>
-              {% endif %}
-            </ul>
-          </li>
-          <li class="dropdown{% if page.category == "assignment" %} active{% endif %}">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Assignments <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              {% if site.assignments[0] %}
-              {% for assignment in site.assignments %}
-              <li><a href="{{site.baseurl}}{{assignment.url}}">{{assignment.title}}</a></li>
-              {% endfor %}
-              {% else %}
-              <li class="dropdown-header">No assignments posted</li>
-              {% endif %}
-            </ul>
-          </li>
+          <li{% if page.category == "note" %} class="active"{% endif %}><a href="{{ site.baseurl }}/notes.html">Notes</a></li>
+          <li{% if page.category == "assignment" %} class="active"{% endif %}><a href="{{ site.baseurl }}/assignments.html">Assignments</a></li>
         </ul>
       </div><!--/.nav-collapse -->
     </div>
