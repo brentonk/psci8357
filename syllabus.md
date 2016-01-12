@@ -26,8 +26,7 @@ I will not accept late assignments except in case of a documented family or medi
 
 <!-- See https://github.com/jennybc/stat540_2014/blob/master/homework/hw_submission-instructions.md, maybe make separate handout? -->
 
-All analysis will be conducted in R.  You must write and submit your problem sets in [R Markdown](http://rmarkdown.rstudio.com) format,  which allows you to embed R code and its output, including graphs, directly in a document.
-You will submit assignments by pushing to a GitHub repository.  I will not accept assignments by email.  Don't even think about printing them out.  We will discuss homework submission policies---and, along the way, the basics of Git and GitHub---in the first class or recitation.  There will be a separate handout laying out the details.
+All analysis will be conducted in R.  You must write and submit your problem sets in [R Markdown](http://rmarkdown.rstudio.com) format,  which allows you to embed R code and its output, including graphs, directly in a document.  You will submit assignments by pushing to a GitHub repository.  I will not accept assignments by email.  Don't even think about printing them out.  We will discuss homework submission policies---and, along the way, the basics of Git and GitHub---in the first class or recitation.  There will be a separate handout laying out the details.
 
 If you are not yet comfortable with the basics of R, here are some hands-on tutorials I recommend completing before the start of the semester:
 
