@@ -125,6 +125,7 @@ This schedule is tentative and is subject to change.
     * Joseph P. Simmons, Leif D. Nelson, and Uri Simonsohn, ["False-Positive Psychology: Undisclosed Flexibility in Data Collection and Analysis Allows Presenting Anything as Significant"](http://pss.sagepub.com/content/22/11/1359) *Psychological Science* 22, no. 11 (2011): 1359--1366.
     * Andrew Gelman and Eric Loken, ["The Statistical Crisis in Science,"](http://www.americanscientist.org/issues/pub/2014/6/the-statistical-crisis-in-science/1) *The American Scientist*
     * Christie Aschwanden, ["Science Isn't Broken"](http://fivethirtyeight.com/features/science-isnt-broken/) (online, FiveThirtyEight, 2015).
+    * Matthew Hankins, ["Still Not Significant"](https://mchankins.wordpress.com/2013/04/21/still-not-significant-2/) (online, Probable Error blog, 2013).
     * XKCD, "Extrapolating": <https://xkcd.com/605/>
     * XKCD, "Significant": <https://xkcd.com/882/>
     * XKCD, "P-Values": <http://xkcd.com/1478/>
