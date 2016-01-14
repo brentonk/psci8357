@@ -202,6 +202,7 @@ This schedule is tentative and is subject to change.
     * Paul W. Holland, ["Statistics and Causal Inference,"](http://www.jstor.org/stable/2289064) *Journal of the American Statistical Association* 81, no. 396 (1986): 945--960.  Also read the comments and rejoinders in the same issue.
     * Paul R. Rosenbaum, ["The Consquences of Adjustment for a Concomitant Variable That Has Been Affected by the Treatment,"](http://www.jstor.org/stable/2981697) *Journal of the Royal Statistical Society (Series A)* 147, no. 5 (1984): 656--666.
     * Paul R. Rosenbaum, ["Choice as an Alternative to Control in Observational Studies,"](http://www.jstor.org/stable/2676761) *Statistical Science* 14, no. 3 (1999): 259--278.
+    * James J. Heckman, ["The Scientific Model of Causality,"](http://dx.doi.org/10.1111/j.0081-1750.2006.00164.x) *Sociological Methodology* 35, no. 1 (2005): 1--97.
 
 ### March 24: Instrumental Variables
 * Topics
