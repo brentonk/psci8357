@@ -1,0 +1,69 @@
+\documentclass[12pt,svgnames]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{sectsty}
+\usepackage{float}
+\usepackage[labelsep=period,font=small,labelfont=bf]{caption}
+
+% Line skipping
+\usepackage{parskip}
+
+% Section numbering
+$if(numbersections)$
+\setcounter{secnumdepth}{5}
+$else$
+\setcounter{secnumdepth}{0}
+$endif$
+
+% Fonts
+\usepackage[charter]{mathdesign}
+\usepackage[scaled]{helvet}
+\usepackage[scaled=0.5]{beramono}
+\allsectionsfont{\sffamily}
+
+$if(highlighting-macros)$
+$highlighting-macros$
+\RecustomVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},fontsize=\small}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{commandchars=\\\{\},fontsize=\small}
+$endif$
+
+% Hyperref
+\usepackage{hyperref}
+
+% Hyperref
+\hypersetup{%
+  pdfborder = {0 0 0},
+  bookmarksdepth = section,
+  citecolor = DarkGreen,
+  linkcolor = DarkBlue,
+  pagecolor = DarkBlue,
+  urlcolor = DarkGreen,
+  pdfauthor = {Brenton Kenkel (Vanderbilt University)},
+  pdftitle = {$title$},
+  colorlinks = true
+}%
+
+% Consistency with provided Pandoc template
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\begin{document}
+
+\begin{Huge}
+  \textbf{\textsf{$title$}}
+\end{Huge}
+
+\textsf{%
+  $if(author)$ $author$ \\ $endif$
+  $if(date)$ $date$ \\ $endif$
+}
+
+\bigskip
+
+$body$
+
+\end{document}
