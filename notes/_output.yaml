@@ -1,0 +1,5 @@
+pdf_document:
+  highlight: tango
+  template: ../charter-template.tex
+html_document:
+  highlight: tango

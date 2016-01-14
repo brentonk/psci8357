@@ -5,6 +5,7 @@ _site/
 # Junk files
 .DS_Store
 .dropbox
+.Rhistory
 
 # e-books
 datastyle.pdf
