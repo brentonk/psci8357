@@ -22,3 +22,9 @@ Due in class on Thursday, January 21.
 
 * Instructions [(PDF)]({{site.baseurl}}/hw/01-data/README.pdf) [(HTML)]({{site.baseurl}}/hw/01-data/README.html)
 
+
+## 2. The OLS Estimator
+
+Due in class on Thursday, January 28.
+
+* Instructions [(PDF)]({{site.baseurl}}/hw/02-ols/README.pdf) [(HTML)]({{site.baseurl}}/hw/02-ols/README.html)
