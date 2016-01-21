@@ -13,3 +13,9 @@ You can find the R Markdown source for all of the notes in the `notes/` subdirec
 
 * [PDF]({{site.baseurl}}/notes/01-important-things.pdf)
 * [HTML]({{site.baseurl}}/notes/01-important-things.html)
+
+## Reintroduction to Linear Regression
+*January 21, 2016*
+
+* [PDF]({{site.baseurl}}/notes/02-reintroduction.pdf)
+* [HTML]({{site.baseurl}}/notes/02-reintroduction.html)
