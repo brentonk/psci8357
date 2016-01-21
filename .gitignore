@@ -18,3 +18,9 @@ datastyle.pdf
 
 # Readings
 /readings/
+
+# Homework answers
+/hw/*/answers*
+
+# Homework makefiles (since they won't work right without answers sources anyway)
+/hw/*/Makefile

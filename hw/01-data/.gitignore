@@ -1,0 +1,6 @@
+# Raw data and script for untidying it
+NMC_v4_0.csv
+untidy-data.r
+
+# Output
+final-data.csv
