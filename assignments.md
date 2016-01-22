@@ -28,3 +28,4 @@ Due in class on Thursday, January 21.
 Due in class on Thursday, January 28.
 
 * Instructions [(PDF)]({{site.baseurl}}/hw/02-ols/README.pdf) [(HTML)]({{site.baseurl}}/hw/02-ols/README.html)
+* R Tips: Looping [(PDF)]({{site.baseurl}}/hw/02-ols/for-and-foreach.pdf) [(HTML)]({{site.baseurl}}/hw/02-ols/for-and-foreach.html)
