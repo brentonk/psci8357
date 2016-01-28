@@ -29,3 +29,10 @@ Due in class on Thursday, January 28.
 
 * Instructions [(PDF)]({{site.baseurl}}/hw/02-ols/README.pdf) [(HTML)]({{site.baseurl}}/hw/02-ols/README.html)
 * R Tips: Looping [(PDF)]({{site.baseurl}}/hw/02-ols/for-and-foreach.pdf) [(HTML)]({{site.baseurl}}/hw/02-ols/for-and-foreach.html)
+
+
+## 3. You'll Just Run 300,000 Regressions
+
+Due in class on Thursday, February 4.
+
+* Instructions [(PDF)]({{site.baseurl}}/hw/03-p-hacking/README.pdf) [(HTML)]({{site.baseurl}}/hw/03-p-hacking/README.html)
