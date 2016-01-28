@@ -19,6 +19,9 @@ datastyle.pdf
 # Readings
 /readings/
 
+# Grading
+/grading/
+
 # Homework answers
 /hw/*/answers*
 
