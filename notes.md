@@ -19,3 +19,9 @@ You can find the R Markdown source for all of the notes in the `notes/` subdirec
 
 * [PDF]({{site.baseurl}}/notes/02-reintroduction.pdf)
 * [HTML]({{site.baseurl}}/notes/02-reintroduction.html)
+
+## The Statistical Crisis in Science (or: How I Learned to Stop Worrying and Love Insignificant Results)
+*January 28, 2016*
+
+* [PDF]({{site.baseurl}}/notes/03-crisis.pdf)
+* [HTML]({{site.baseurl}}/notes/03-crisis.html)
