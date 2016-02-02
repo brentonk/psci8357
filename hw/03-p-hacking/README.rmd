@@ -51,7 +51,7 @@ You will select $J = 3$ of the 88 "concept" variables to test the robustness of 
     * A weight for each model, proportional to its $R^2$: $$\omega_{jm} = \frac{R_{jm}^2}{\sum_{l=1}^M R_{jl}^2}$$
     * The average estimated coefficient, $$\bar{\beta}_j = \sum_{m = 1}^M \omega_{jm} \hat{\beta}_{jm}.$$
     * The average estimated variance of the coefficient, $$\bar{\sigma}_j^2 = \sum_{m=1}^M \omega_m \hat{\sigma}_{jm}^2.$$
-    * The so-called average $p$-value, $$\bar{p}_j = \sum_{m=1}^M \omega_{jm} \Phi(0 \,|\, \hat{\beta}_j, \hat{\sigma}_j^2),$$ where $\Phi(0 \,|\, \mu, \sigma^2)$ is the probability of drawing a value less than zero from a normal distribution with mean $\mu$ and variance $\sigma^2$.  This is *not* the average of the individual $p$-values, since direction matters.
+    * The so-called average $p$-value, $$\bar{p}_j = \sum_{m=1}^M \omega_{jm} \Phi(0 \,|\, \hat{\beta}_{jm}, \hat{\sigma}_{jm}^2),$$ where $\Phi(0 \,|\, \mu, \sigma^2)$ is the probability of drawing a value less than zero from a normal distribution with mean $\mu$ and variance $\sigma^2$.  This is *not* the average of the individual $p$-values, since direction matters.
 
 In the last step, you're essentially answering the following: Suppose you drew a model at random, where the probability of choosing each model is proportional to its $R^2$.  Then, suppose you drew a value of $\beta_j$ from the estimated sampling distribution of the coefficients of this model.  What is the probability that the value you drew is less than zero?  A result close to 0 or 1 indicates a robust relationship.  A result close to 0.5 indicates that the sign of the estimated coefficient is highly dependent on the particular specification---and thus the relationship is not robust.
 
@@ -161,6 +161,19 @@ You can extract additional information, including the $R^2$, with the `glance()`
 ```{r broom-glance}
 glance(linear_fit)
 glance(linear_fit) %>% select(r.squared)
+```
+
+### Cumulative Probabilities from a Normal Distribution
+
+Suppose you have a random variable $X$ drawn from a normal distribution with mean $\mu$ and variance $\sigma^2$, and you want to find the probability of drawing a value of $X$ less than some fixed number $z$.  You would use `pnorm(z, mean = mu, sd = sigma)`, as in the following examples.
+
+```{r pnorm}
+## Probability that a standard normal is less than -1.96
+pnorm(-1.96, mean = 0, sd = 1)
+
+## Probability of drawing a value less than 1 from a normal distribution with
+## mean 2 and sd 5
+pnorm(1, mean = 2, sd = 5)
 ```
 
 

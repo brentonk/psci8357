@@ -40,7 +40,7 @@ You will select $J = 3$ of the 88 "concept" variables to test the robustness of 
     * A weight for each model, proportional to its $R^2$: $$\omega_{jm} = \frac{R_{jm}^2}{\sum_{l=1}^M R_{jl}^2}$$
     * The average estimated coefficient, $$\bar{\beta}_j = \sum_{m = 1}^M \omega_{jm} \hat{\beta}_{jm}.$$
     * The average estimated variance of the coefficient, $$\bar{\sigma}_j^2 = \sum_{m=1}^M \omega_m \hat{\sigma}_{jm}^2.$$
-    * The so-called average $p$-value, $$\bar{p}_j = \sum_{m=1}^M \omega_{jm} \Phi(0 \,|\, \hat{\beta}_j, \hat{\sigma}_j^2),$$ where $\Phi(0 \,|\, \mu, \sigma^2)$ is the probability of drawing a value less than zero from a normal distribution with mean $\mu$ and variance $\sigma^2$.  This is *not* the average of the individual $p$-values, since direction matters.
+    * The so-called average $p$-value, $$\bar{p}_j = \sum_{m=1}^M \omega_{jm} \Phi(0 \,|\, \hat{\beta}_{jm}, \hat{\sigma}_{jm}^2),$$ where $\Phi(0 \,|\, \mu, \sigma^2)$ is the probability of drawing a value less than zero from a normal distribution with mean $\mu$ and variance $\sigma^2$.  This is *not* the average of the individual $p$-values, since direction matters.
 
 In the last step, you're essentially answering the following: Suppose you drew a model at random, where the probability of choosing each model is proportional to its $R^2$.  Then, suppose you drew a value of $\beta_j$ from the estimated sampling distribution of the coefficients of this model.  What is the probability that the value you drew is less than zero?  A result close to 0 or 1 indicates a robust relationship.  A result close to 0.5 indicates that the sign of the estimated coefficient is highly dependent on the particular specification---and thus the relationship is not robust.
 
@@ -150,13 +150,13 @@ fake_data
 ```
 
 ```
-##        a      b      c      d       e
-## 1  0.436  0.350  0.937  1.906 -1.2629
-## 2 -0.267 -0.489  0.164 -0.927  0.4763
-## 3 -0.143  0.442 -0.499  0.357 -1.0801
-## 4  1.967  0.639 -0.139 -0.979  0.0329
-## 5 -1.060  1.969 -0.337 -0.287 -1.8218
-## 6 -0.843 -1.465  0.472  0.103  0.9518
+##         a        b      c      d       e
+## 1  1.4491  0.77638  1.507  0.577 -1.7658
+## 2 -0.6567  0.23930  0.223  0.659 -0.2233
+## 3  1.3831 -0.00231 -0.852 -0.261 -0.5779
+## 4  2.0105  0.90331 -0.520 -0.152 -0.0388
+## 5 -0.0299 -1.11803 -1.186  0.165  0.6940
+## 6 -0.6448  0.06693  0.269 -0.271 -0.0361
 ```
 
 ```r
@@ -165,13 +165,13 @@ fake_data %>% select(one_of(var_names))
 ```
 
 ```
-##        b      d
-## 1  0.350  1.906
-## 2 -0.489 -0.927
-## 3  0.442  0.357
-## 4  0.639 -0.979
-## 5  1.969 -0.287
-## 6 -1.465  0.103
+##          b      d
+## 1  0.77638  0.577
+## 2  0.23930  0.659
+## 3 -0.00231 -0.261
+## 4  0.90331 -0.152
+## 5 -1.11803  0.165
+## 6  0.06693 -0.271
 ```
 
 ### Regress on All Variables
@@ -191,19 +191,19 @@ summary(linear_fit)
 ## 
 ## Residuals:
 ##      1      2      3      4      5      6 
-##  0.317  0.615  0.384  0.299 -0.739 -0.876 
+##  0.460 -0.727 -0.496  0.479  0.537 -0.253 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(>|t|)
-## (Intercept)     1.45       1.37    1.06     0.48
-## b               3.96       2.91    1.36     0.40
-## c              -1.63       2.64   -0.62     0.65
-## d               2.77       2.53    1.09     0.47
-## e               5.12       3.92    1.31     0.42
+## (Intercept)  -0.1424     0.7495   -0.19     0.88
+## b             0.9783     1.1187    0.87     0.54
+## c            -1.4010     1.1429   -1.23     0.44
+## d            -0.0391     1.7121   -0.02     0.99
+## e            -1.4193     1.2305   -1.15     0.45
 ## 
-## Residual standard error: 1.42 on 1 degrees of freedom
-## Multiple R-squared:  0.661,	Adjusted R-squared:  -0.695 
-## F-statistic: 0.488 on 4 and 1 DF,  p-value: 0.775
+## Residual standard error: 1.25 on 1 degrees of freedom
+## Multiple R-squared:  0.771,	Adjusted R-squared:  -0.145 
+## F-statistic: 0.842 on 4 and 1 DF,  p-value: 0.663
 ```
 
 ### Extract Regression Details
@@ -218,11 +218,11 @@ tidy(linear_fit)
 
 ```
 ##          term estimate std.error statistic p.value
-## 1 (Intercept)     1.45      1.37     1.059   0.482
-## 2           b     3.96      2.91     1.361   0.403
-## 3           c    -1.63      2.64    -0.618   0.647
-## 4           d     2.77      2.53     1.094   0.471
-## 5           e     5.12      3.92     1.306   0.416
+## 1 (Intercept)  -0.1424     0.749   -0.1900   0.880
+## 2           b   0.9783     1.119    0.8745   0.543
+## 3           c  -1.4010     1.143   -1.2258   0.436
+## 4           d  -0.0391     1.712   -0.0229   0.985
+## 5           e  -1.4193     1.231   -1.1534   0.455
 ```
 
 The output is a data frame, which means we can use all our favorite **dplyr** tools on it.
@@ -236,7 +236,7 @@ tidy(linear_fit) %>%
 
 ```
 ##   estimate std.error
-## 1     2.77      2.53
+## 1  -0.0391      1.71
 ```
 
 You can extract additional information, including the $R^2$, with the `glance()` function.  Its output looks like a vector, but it's actually a one-row data frame.
@@ -247,10 +247,10 @@ glance(linear_fit)
 ```
 
 ```
-##   r.squared adj.r.squared sigma statistic p.value df logLik  AIC  BIC
-## 1     0.661        -0.695  1.42     0.488   0.775  5  -5.26 22.5 21.3
+##   r.squared adj.r.squared sigma statistic p.value df logLik AIC  BIC
+## 1     0.771        -0.145  1.25     0.842   0.663  5  -4.49  21 19.7
 ##   deviance df.residual
-## 1     2.03           1
+## 1     1.57           1
 ```
 
 ```r
@@ -259,7 +259,31 @@ glance(linear_fit) %>% select(r.squared)
 
 ```
 ##   r.squared
-## 1     0.661
+## 1     0.771
+```
+
+### Cumulative Probabilities from a Normal Distribution
+
+Suppose you have a random variable $X$ drawn from a normal distribution with mean $\mu$ and variance $\sigma^2$, and you want to find the probability of drawing a value of $X$ less than some fixed number $z$.  You would use `pnorm(z, mean = mu, sd = sigma)`, as in the following examples.
+
+
+```r
+## Probability that a standard normal is less than -1.96
+pnorm(-1.96, mean = 0, sd = 1)
+```
+
+```
+## [1] 0.025
+```
+
+```r
+## Probability of drawing a value less than 1 from a normal distribution with
+## mean 2 and sd 5
+pnorm(1, mean = 2, sd = 5)
+```
+
+```
+## [1] 0.421
 ```
 
 
