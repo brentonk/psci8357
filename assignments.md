@@ -36,3 +36,11 @@ Due in class on Thursday, January 28.
 Due in class on Thursday, February 4.
 
 * Instructions [(PDF)]({{site.baseurl}}/hw/03-p-hacking/README.pdf) [(HTML)]({{site.baseurl}}/hw/03-p-hacking/README.html)
+
+
+## 4. Going Fishing
+
+Due in class on Thursday, February 18.
+
+* Instructions [(PDF)]({{site.baseurl}}/hw/04-specification/README.pdf) [(HTML)]({{site.baseurl}}/hw/04-specification/README.html)
+
