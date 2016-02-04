@@ -1,0 +1,383 @@
+---
+title: "Higher-Order Terms"
+author: "Brenton Kenkel --- PSCI 8357"
+date: "February 4, 2016"
+references:
+- id: clarify
+  title: "Making the Most of Statistical Analyses: Improving Interpretation and Presentation"
+  author:
+  - family: King
+    given: Gary
+  - family: Tomz
+    given: Michael
+  - family: Wittenberg
+    given: Jason
+  container-title: American Journal of Political Science
+  volume: 44
+  issue: 2
+  URL: 'http://gking.harvard.edu/files/making.pdf'
+  page: 341-355
+  type: article-journal
+  issued:
+    year: 2000
+- id: greene
+  title: "Econometric Analysis"
+  author:
+  - family: Greene
+    given: William H.
+  edition: 5
+  publisher: Prentice Hall
+  type: book
+  issued:
+    year: 2003
+---
+
+```{r setup, include=FALSE}
+options(width = 70, digits = 3)
+knitr::opts_chunk$set(fig.width = 5, fig.height = 4, fig.align = "center")
+```
+
+In the [Reintroduction to Linear Regression](02-reintroduction.html), we talked about the linear model,
+$$
+Y_i = x_i^\top \beta + \epsilon_i,
+$$
+and how to estimate its parameters $\beta$ via ordinary least squares.  It is not necessary that the model be linear in the covariates.  The OLS estimator retains its nice properties as long as the model is linear in the parameters.  For example,
+$$
+Y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i1}^2 + \epsilon_i
+$$
+is linear in the parameter vector $\beta$ but not in the covariate $x_{i1}$.  The OLS estimator of $\beta$ is still unbiased, consistent, and all that jazz.  But if your model is a nonlinear function of the parameters, such as
+$$
+Y_i = \beta_0 + x_{i1}^{\beta_1} + x_{i2}^{\beta_2} + \epsilon_i,
+$$
+then the OLS estimator is no good.  For a model like this, you would want to derive an alternative estimator using maximum likelihood or another technique beyond the scope of this course.
+
+Today, we will focus on models of the first variety---those that are linear in the parameters but not the covariates.  We will talk mainly about models that are *polynomial* functions of the covariates, of which interactive and quadratic functions are special cases.  We will cover:
+
+* How to interpret the results of polynomial models.
+* Why you should never leave out lower-order terms when including higher-order terms.
+* How to calculate standard errors and confidence intervals on estimated marginal effects.
+* How to test hypotheses about nonlinear relationships.
+* Modeling nonlinearities of unknown form.
+
+
+## Specification and Interpretation
+
+Let us begin by defining the quantity of interest.  For the moment, assume we are still in the world where the regression function is linear in the covariates as well as the parameters.  The coefficient on the $j$'th covariate is then equivalent to the partial derivative of the regression function with respect to that covariate:
+$$
+\frac{\partial E[Y_i \,|\, x_i]}{x_{ij}} = \beta_j.
+$$
+As shorthand, I will call this derivative the *marginal change in conditional expectation*, or MCCE,[^term] with respect to the covariate $x_{ij}$.  People usually call this the *marginal effect* of $x_{ij}$, but that has a causal connotation that is not always appropriate.
+
+[^term]: MCCE is my own terminology, so don't expect people to be familiar with the acronym if you mention changes in conditional expectation in the papers you write.
+
+If the regression function is nonlinear in the covariates, then the MCCEs are no longer constant, and the estimated coefficients can no longer be interpreted on their own.  For example, consider a model that is a quadratic function of a single covariate, $W_i$:
+$$
+Y_i = \beta_0 + \beta_1 W_i + \beta_2 W_i^2 + \epsilon_i.
+$$
+The MCCE changes depending on the value of $W_i$:
+$$
+\frac{\partial E[Y_i \,|\, W_i]}{\partial W_i} = \beta_1 + 2 \beta_2 W_i.
+$$
+Let's look at the conditional expectation function with $\beta = (1, -2, 1)$.
+
+```{r quadratic-example, fig.height=3}
+W <- seq(-1, 3, by = 0.1)
+E_Y <- 1 - 2 * W + W^2
+plot(W, E_Y, type = "l")
+```
+
+The MCCE is negative for $W < 1$ and positive for $W > 1$, and its magnitude grows as $W$ gets farther away from $1$.
+
+The interactive model is similar.  Consider the regression function
+$$
+Y_i = \beta_0 + \beta_W W_i + \beta_Z Z_i + \beta_{WZ} W_i Z_i + \epsilon_i.
+$$
+The MCCEs with respect to $W_i$ and $Z_i$ are
+$$
+\begin{aligned}
+\frac{\partial E[Y_i \,|\, W_i, Z_i]}{\partial W_i}
+&=
+\beta_W + \beta_{WZ} Z_i,
+\\
+\frac{\partial E[Y_i \,|\, W_i, Z_i]}{\partial Z_i}
+&=
+\beta_Z + \beta_{WZ} W_i.
+\end{aligned}
+$$
+So now the MCCE of each variable depends on the value of the other---we are modeling conditional effects.  In the special case where $Z_i$ is a binary variable, we have the *varying slopes* model:
+$$
+\begin{aligned}
+\frac{\partial E[Y_i \,|\, W_i, Z_i = 0]}{\partial W_i}
+&=
+\beta_W,
+\\
+\frac{\partial E[Y_i \,|\, W_i, Z_i = 1]}{\partial W_i}
+&=
+\beta_W + \beta_{WZ}.
+\end{aligned}
+$$
+
+When you estimate an interactive model, you should always include the lower-order terms in the regression.  In other words, if you include $W_i Z_i$, then you should also include $W_i$ and $Z_i$ individually.
+
+To see why, suppose you were to include $W_i$ and $W_i Z_i$ but not $Z_i$.  This amounts to fixing $\beta_Z = 0$, so the MCCE with respect to $Z_i$ is
+$$
+\frac{\partial E[Y_i \,|\, W_i, Z_i]}{\partial Z_i}
+=
+\beta_{WZ} W_i.
+$$
+Consequently, the MCCE with respect to $Z_i$ is a line through the origin: it equals zero whenever $W_i = 0$.  This is a restriction that is never sensible to impose---so don't do it.
+
+Let's run through a couple of examples of calculating MCCEs to interpret the results.  We'll be using data from the **car** package, which also has some handy hypothesis testing tools that we'll use later today.
+
+```{r packages, message = FALSE, warning = FALSE}
+library("car")
+library("dplyr")
+library("ggplot2")
+```
+
+We will use the `Prestige` dataset, which records the perceived prestige of various jobs in Canada in the early 1970s.  To begin with, we'll model the relationship between a profession's income and its prestige.
+
+```{r prestige-look, fig.height = 3}
+data(Prestige)
+head(Prestige)
+Prestige <- mutate(Prestige, income = income / 1000)
+ggplot(Prestige, aes(x = income, y = prestige)) +
+    geom_point()
+```
+
+Notice that the conditional expectation function does not appear perfectly linear.  After about $10,000, higher incomes do not appear to be associated with higher prestige.  We will try to capture this with a quadratic model.[^piecewise]
+
+[^piecewise]: A piecewise linear model with a breakpoint around $10,000 of income is probably more sensible, but it wouldn't help us estimate and interpret quadratic models.
+
+When fitting quadratic models, people accustomed to Stata like to create a new "squared" variable in their data frame and then include it in the regression formula.  Don't do that.  Instead, include `I(x^2)` as a term in your regression formula, where `x` is the name of the variable you want to include.
+
+```{r prestige-fit-quadratic}
+fit_quadratic <- lm(prestige ~ income + I(income^2), data = Prestige)
+fit_quadratic
+```
+
+Let's interpret the results by calculating the MCCE with respect to income.
+
+```{r prestige-quadratic-cce, fig.height = 3}
+beta_income <- coef(fit_quadratic)["income"]
+beta_income_2 <- coef(fit_quadratic)["I(income^2)"]
+Prestige <- Prestige %>%
+    mutate(MCCE_income = beta_income + 2 * beta_income_2 * income)
+ggplot(Prestige, aes(x = income, y = MCCE_income)) +
+    geom_point() +
+    geom_hline(yintercept = 0, linetype = 2)
+```
+
+For very low-earning jobs, we would expect an extra $1,000 in income to correspond to about a 6-point increase in the prestige score.  For middle-income jobs, around $10,000, an extra $1,000 would be associated with a 3- or 4-point increase.  For extremely high-earning jobs, we estimate that further income is actually associated with lower prestige.
+
+Now let's look at an interactive model.  We will now model prestige as a function of education and income, including the interaction between them.
+
+```{r prestige-fit-interaction}
+fit_interaction <- lm(prestige ~ education * income, data = Prestige)
+fit_interaction
+```
+
+The coefficients here are a little easier to interpret than in the quadratic model.  We can see that the MCCE with respect to education decreases with income.  Let's visualize education's MCCE as a function of income.
+
+```{r prestige-interaction-cce, fig.height = 3}
+beta_education <- coef(fit_interaction)["education"]
+beta_education_income <- coef(fit_interaction)["education:income"]
+Prestige <- Prestige %>%
+    mutate(MCCE_education = beta_education + beta_education_income * income)
+ggplot(Prestige, aes(x = income, y = MCCE_education)) +
+    geom_point()
+```
+
+So, suppose we were to compare two professions, both making almost no money, where one requires an additional year of education on average.  We would expect the more-educated profession to have a prestige score about 5 points higher.  But if we compared two professions with a one-year difference in education, both making about $15,000, we would expect the more-educated one to score only about 2.5 points higher in terms of prestige.
+
+
+## Inference
+
+There are two kinds of hypotheses we might want to test with a quadratic or interactive model.
+
+1. That the MCCE of $W_i$ is zero at a particular value of $W_i$ (for a quadratic model) or of $Z_i$ (for an interactive model).
+2. That the MCCE of $W_i$ is *always* zero.
+
+In a standard linear model with no higher-order terms, each MCCE is constant, so these two hypotheses are equivalent.  Not so in higher-order models.
+
+### Pointwise Hypotheses
+
+To tackle the first type of hypothesis---the pointwise one---we will derive the standard error of the MCCE at a particular point.  We will use the following formula for the variance of the weighted sum of two variables, where $A$ and $B$ are random variables and $c_1$ and $c_2$ are real-valued constants:
+$$
+V[c_1 A + c_2 B] = c_1^2 V[A] + c_2^2 V[B] + 2 c_1 c_2 \text{Cov}[A, B]
+$$
+
+We will start with the standard error of the MCCE of a variable included with its quadratic term.  Remember that the formula for the MCCE is $\beta_1 + 2 \beta_2 W_i$, where $\beta_1$ and $\beta_2$ are the coefficients on the main term and the quadratic term, respectively.  Its variance is therefore
+$$
+V[\beta_1 + 2 \beta_2 W_i]
+=
+V[\beta_1] + 4 W_i^2 V[\beta_2] + 4 W_i \text{Cov}[\beta_1, \beta_2]
+$$
+
+In R, we can retrieve our estimates of these variances by running `vcov()` on a fitted model object.  Let's calculate the standard error of the estimated MCCE for each observation in the `Prestige` data, along with the associated confidence intervals.
+
+```{r se-quadratic}
+vcov(fit_quadratic)
+var_income <- vcov(fit_quadratic)["income", "income"]
+var_income_2 <- vcov(fit_quadratic)["I(income^2)", "I(income^2)"]
+covar_income_2 <- vcov(fit_quadratic)["income", "I(income^2)"]
+Prestige <- Prestige %>%
+    mutate(var_MCCE = var_income +
+               4 * income^2 * var_income_2 +
+               4 * income * covar_income_2,
+           se_MCCE = sqrt(var_MCCE),
+           lower = MCCE_income - 2 * se_MCCE,
+           upper = MCCE_income + 2 * se_MCCE)
+```
+
+Now we can plot the estimated MCCE and its confidence interval as a function of income.
+
+```{r plot-se-quadratic, fig.height = 3}
+ggplot(Prestige, aes(x = income, y = MCCE_income)) +
+    geom_ribbon(aes(ymin = lower, ymax = upper), fill = "gray70") +
+    geom_line() +
+    geom_rug(sides = "b")
+```
+
+For an interactive model, the formula is slightly different.  In that case, the MCCE with respect to $W_i$ depends on the value of $Z_i$: $\beta_W + \beta_{WZ} Z_i$.  This gives us a variance of
+$$
+V[\beta_W + \beta_{WZ} Z_i]
+=
+V[\beta_W] + Z_i^2 V[\beta_{WZ}] + 2 Z_i \text{Cov}[\beta_W, \beta_{WZ}]
+$$
+
+Another approach to estimating the standard error of the MCCE at a particular point is by simulation [@clarify].  The simulation-based approach isn't necessary in this case since we have a formula, but it carries over nicely for more complex models (the kind you'll see in Stat III) where formulas are hard to derive.  To estimate the standard error of the MCCE at $W_i$ by simulation, we will:
+
+1. Draw $m = 1, \ldots, M$ values of $\tilde{\beta}_m$ from the estimated sampling distribution, a normal distribution with mean $\hat{\beta}$ and variance matrix $\hat{\Sigma}$.
+2. For each $\tilde{\beta}_m$, calculate the associated MCCE at $W_i$: $$\tilde{\beta}_{m1} + 2 \tilde{\beta}_{m2} W_i.$$
+3. Take the standard deviation of the $M$ simulated MCCEs.
+
+Let's do this for the income level associated with the first observation in the `Prestige` data.  We'll fire up the packages we need to draw from a multivariate normal distribution and run loops.
+
+
+```{r clarify-pkg, message = FALSE}
+library("foreach")
+library("MASS")
+```
+
+We'll draw $M = 100$ values of $\tilde{\beta}_m$ from the estimated sampling distribution.
+
+```{r clarify-draw}
+n_sim <- 100
+beta_sim <- mvrnorm(n_sim,
+                    mu = coef(fit_quadratic),
+                    Sigma = vcov(fit_quadratic))
+head(beta_sim)
+```
+
+Now, for each of these, we'll calculate and save the associated MCCE.
+
+```{r clarify-run}
+MCCE_dist <- foreach (i = 1:n_sim, .combine = "c") %do% {
+    beta_sim[i, "income"] +
+        2 * beta_sim[i, "I(income^2)"] * Prestige[1, "income"]
+}
+```
+
+Let's take the standard deviation of the simulation and compare it to the one we calculated analytically.
+
+```{r clarify-compare}
+sd(MCCE_dist)
+Prestige[1, "se_MCCE"]
+```
+
+Not too far off!  Again, this wasn't the best way to do it---there's no reason to simulate what we can find with a simple formula---but it generalizes to more complex models (or more complex functions of the coefficients) better than the formulaic method.  The simulation approach is also what the very helpful [**interplot**](https://cran.r-project.org/web/packages/interplot/index.html) package uses to calculate confidence intervals in automatically generating plots like the one we made of `MCCE_income`.
+
+### Global Hypotheses
+
+For better or worse, political scientists usually care mainly about null hypotheses of the form, loosely speaking, "This variable ain't got nothin' to do with that variable."  The pointwise calculations we just did don't speak to hypotheses of this form.
+
+For a quadratic model, the null hypothesis that $W_i$ has nothing to do with the response can be stated as
+
+> H0: $\beta_1 = 0$ and $\beta_2 = 0$
+
+For an interactive model, the null hypothesis that $W_i$ has nothing to do with the response can be stated as
+
+> H0: $\beta_W = 0$ and $\beta_{WZ} = 0$
+
+Both of these are *linear hypotheses*.  A linear hypothesis is a hypothesis of the form $$\mathbf{R} \beta = q,$$ where $\mathbf{R}$ is an $r \times p$ matrix and $q$ is an $r \times 1$ vector.  For example, the matrix version of the null hypothesis for the quadratic model would be
+$$
+\begin{bmatrix}
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+\beta_0 \\ \beta_1 \\ \beta_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\ 0
+\end{bmatrix}
+$$
+The standard test for linear hypotheses like this is the *Wald test* [@greene, 6.3.1].  The test statistic is
+$$
+W = (\mathbf{R} \hat{\beta} - q)^\top (\mathbf{R} \hat{\Sigma} \mathbf{R}^\top)^{-1} (\mathbf{R} \hat{\beta} - q).
+$$
+Under the null hypothesis, the asymptotic distribution of $W$ is $\chi^2$ with $r$ degrees of freedom.
+
+The Wald test is not just an aggregation of the individual $Z$ (or $t$) tests of the coefficients.  Two coefficients might each individually be statistically insignificant, yet the Wald test may lead us to reject the null hypothesis that both are zero.  Conversely, one of a group of coefficients might be statistically significant, and yet the Wald test may not have us reject the null hypothesis that all are zero.
+
+As an instructive exercise, we will implement the Wald test ourselves in R.  Then we will see the easy way to do it.
+
+```{r wald-manual}
+R <- rbind(
+    c(0, 1, 0),
+    c(0, 0, 1)
+)
+q <- c(0, 0)
+beta_hat <- coef(fit_quadratic)
+Sigma_hat <- vcov(fit_quadratic)
+
+Rbq <- R %*% beta_hat - q
+RSR <- R %*% Sigma_hat %*% t(R)
+W <- t(Rbq) %*% solve(RSR) %*% Rbq
+W
+pchisq(W, df = nrow(R), lower.tail = FALSE)
+```
+
+The easy way entails using the `linearHypothesis()` function from the **car** package.  You can supply the matrix of restrictions $\mathbf{R}$ and the vector of values $q$ directly to the function.
+
+```{r linear-hypothesis-alt}
+linearHypothesis(fit_quadratic,
+                 hypothesis.matrix = R,
+                 rhs = q,
+                 test = "Chisq")
+```
+
+Or, even easier, you can just write a vector of strings expressing your hypothesis in terms of the relevant coefficient names.  Let's now test a composite null hypothesis for education in the interactive model.
+
+```{r linear-hypothesis}
+linearHypothesis(fit_interaction,
+                 c("education = 0", "education:income = 0"),
+                 test = "Chisq")
+```
+
+The Wald test can be used even for standard linear models.  For example, imagine that we model the response as a function of a categorical variable by including dummy variables for each category.  The null hypothesis that the variable has no association with the expected value of the response is equivalent to the coefficient on each dummy variable being zero.
+
+Let's do an example with a 20-category variable, where the null hypothesis is true.
+
+```{r seed, echo = FALSE}
+set.seed(124)
+```
+
+```{r dummy-hypothesis}
+x <- rnorm(1000)
+y <- 1 - x + rnorm(1000)
+w <- sample(letters[1:20], size = 1000, replace = TRUE)
+fit_dummy <- lm(y ~ x + w)
+summary(fit_dummy)
+hypotheses <- names(coef(fit_dummy))
+hypotheses <- setdiff(hypotheses, c("(Intercept)", "x"))
+hypotheses <- paste(hypotheses, "= 0")
+linearHypothesis(fit_dummy,
+                 hypotheses,
+                 test = "Chisq")
+```
+
+
+## References

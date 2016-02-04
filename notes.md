@@ -25,3 +25,9 @@ You can find the R Markdown source for all of the notes in the `notes/` subdirec
 
 * [PDF]({{site.baseurl}}/notes/03-crisis.pdf)
 * [HTML]({{site.baseurl}}/notes/03-crisis.html)
+
+## Higher-Order Terms
+*February 4, 2016*
+
+* [PDF]({{site.baseurl}}/notes/04-higher-order.pdf)
+* [HTML]({{site.baseurl}}/notes/04-higher-order.html)
