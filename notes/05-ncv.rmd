@@ -1,0 +1,365 @@
+---
+title: "Non-Constant Variance"
+author: "Brenton Kenkel --- PSCI 8357"
+date: "February 11, 2016"
+references:
+- id: bp
+  title: "The Lagrange Multiplier Test and its Applications to Model Specification in Econometrics"
+  author:
+  - family: Breusch
+    given: T.S.
+  - family: Pagan
+    given: A.R.
+  container-title: Review of Economic Studies
+  volume: 47
+  issue: 1
+  URL: http://www.jstor.org/stable/2297111
+  page: 239-253
+  type: article-journal
+  issued:
+    year: 1980
+- id: kb
+  title: "Robust Tests for Heteroscedasticity Based on Regression Quantiles"
+  author:
+  - family: Koenker
+    given: Roger
+  - family: Bassett
+    given: Gilbert
+    suffix: Jr.
+  container-title: Econometrica
+  volume: 50
+  issue: 1
+  URL: http://www.jstor.org/stable/1912528
+  page: 43-61
+  type: article-journal
+  issued:
+    year: 1982
+- id: greene
+  title: "Econometric Analysis"
+  author:
+  - family: Greene
+    given: William H.
+  edition: 5
+  publisher: Prentice Hall
+  type: book
+  issued:
+    year: 2003
+- id: white
+  title: "A Heteroskedasticity-Consistent Covariance Matrix Estimator and a Direct Test for Heteroskedasticity"
+  author:
+  - family: White
+    given: Halbert
+  container-title: Econometrica
+  volume: 48
+  issue: 4
+  URL: http://www.jstor.org/stable/1912934
+  page: 817-838
+  type: article-journal
+  issued:
+    year: 1980
+- id: mw
+  title: "Some Heteroskedasticity-Consistent Covariance Matrix Estimators with Improved Finite Sample Properties"
+  author:
+  - family: MacKinnon
+    given: James G.
+  - family: White
+    given: Halbert
+  container-title: Journal of Econometrics
+  volume: 29
+  issue: 3
+  URL: http://dx.doi.org/10.1016/0304-4076(85)90158-7
+  page: 305-325
+  type: article-journal
+  issued:
+    year: 1985
+---
+
+```{r setup, include=FALSE}
+options(width = 70, digits = 3)
+knitr::opts_chunk$set(fig.width = 5, fig.height = 4, fig.align = "center")
+```
+
+From the amount of attention heteroskedasticity receives in graduate statistical modeling courses---including this one!---you would think it is a dire problem for statistical inference.  It isn't.[^name]  It probably doesn't rank among the top 10.  Nonetheless, your future advisors and reviewers will expect you to be familiar with heteroskedasticity and the methods for dealing with it, so today's goal is to make sure you're well equipped.
+
+[^name]: I think maybe people get fixated on it because it's got an imposing name.  I mean, *heteroskedasticity*, right?  You tell your drunk uncles you study public opinion, and they'll probably start talking about how Donald Trump is going to Make America Great Again.  But you tell them you're working on overcoming heteroskedasticity and they'll shuffle off to another room real fast.
+
+Note: Much of the material in these notes comes from @greene [chapters 10--11].
+
+
+# What Is Heteroskedasticity?
+
+*Heteroskedasticity* is when the variance of the error term, or the residual variance, is not constant across observations.  Graphically, it means the spread of points around the regression line is variable.
+
+```{r plot-hetero}
+x <- rnorm(250)
+y <- 1 + x + rnorm(250, sd = abs(x))
+plot(x, y, main = "Heteroskedasticity")
+```
+
+Under *homoskedasticity*, we have $V[\epsilon_i \,|\, x_i] = \sigma^2$, a constant, for all $i = 1, \ldots, N$.  Under heteroskedasticity, this no longer holds; we have $V[\epsilon_i \,|\, x_i] \neq V[\epsilon_j \,|\, x_j]$ for some $i, j$.  If we continue to assume that there is no autocorrelation---that the covariance of each pair of distrinct $\epsilon_i$ and $\epsilon_j$ is $0$---then we can write the variance matrix of the vector $\epsilon$ as
+$$
+V[\epsilon \,|\, \mathbf{X}]
+=
+\begin{bmatrix}
+\sigma_1^2 & 0 & \cdots & 0 \\
+0 & \sigma_2^2 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \sigma_N^2
+\end{bmatrix}
+=
+\sigma^2 \begin{bmatrix}
+\omega_1 & 0 & \cdots & 0 \\
+0 & \omega_2 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \omega_N
+\end{bmatrix}
+=
+\sigma^2 \Omega.
+$$
+
+
+# Why Do We Care?
+
+You will sometimes hear it said, even by people who ought to know better, that "homoskedasticity is one of the OLS assumptions".  This is nonsense on a stick.  It's like saying "one of the assumptions of pants is that you have legs".  Pants are pants regardless of your appendages, though it may or may not be a good idea for you to wear them.  Analogously, OLS is just a statistic---a function of your sample data.  The only "assumption" is that $\mathbf{X}$ has rank $p$, because otherwise $\mathbf{X}^\top \mathbf{X}$ isn't invertible and the OLS estimate is ill-defined.
+
+So is it a bad idea to use OLS in the presence of heteroskedasticity?  To put it more precisely, do the OLS properties we like break down in the presence of heteroskedasticity?  Let's check in on them.
+
+* **Unbiasedness:** Nope, OLS is unbiased regardless.  You can verify this yourself: we proved its unbiasedness in class, and the only thing we assumed about the errors was $E[\epsilon_i \,|\, x_i] = 0$.
+* **Consistency:** Under reasonable technical conditions I won't get into here (look at Greene or any other graduate-level econometrics textbook if you're curious), OLS is still consistent in the presence of heteroskedasticity.
+* **Asymptotic normality:** Ditto.
+* **Efficiency:** Aha!  If you carefully read the Gauss-Markov Theorem, as I'm sure you did, you remember that it depends on the assumption that $V[\epsilon_i \,|\, x_i] = \sigma^2$, a constant, for all $x_i$.  We didn't assume this just for fun.  If the errors are heteroskedastic, then there is an unbiased linear estimator with a lower variance than OLS.  The problem is, to use that estimator, we must know each individual error variance up to a multiplicative constant.  In other words, we must know $\Omega$.  We usually don't.  So there's a more efficient estimator out there, but we're unlikely to know what it is.
+
+In sum, the OLS estimator is unbiased, consistent, and asymptotically normal despite heteroskedasticity.  It is inefficient, but the optimal estimator may be unavailable to us.  It sounds like heteroskedasticity is not such a big problem.  It isn't---unless we want to draw inferences and test hypotheses.
+
+Let us briefly remember some [Important Things about Statistics](01-important-things.html).  The standard error is the standard deviation of the sampling distribution of a statistic.  We like estimators with low standard errors because it is easier to draw inferences from them---the estimates are less prone to fluctuate due to sampling variation.  But we almost never know the true standard error of an estimator, so we have to estimate it.  (Yo dawg, I heard you like estimators, so...)
+
+Under homoskedasticity, the variance matrix of the OLS estimator (treating the covariates $\mathbf{X}$ as fixed) is
+$$
+\Sigma
+=
+V[\hat{\beta}_{\text{OLS}}(Y, \mathbf{X}) \,|\, \mathbf{X}]
+=
+\sigma^2 (\mathbf{X}^\top \mathbf{X})^{-1}.
+$$
+The typical estimate of this variance matrix is
+$$
+\hat{\Sigma}_{\text{OLS}}
+=
+\frac{\sum_{i=1}^N \hat{e}_i^2}{N - p} (\mathbf{X}^\top \mathbf{X})^{-1},
+$$
+where $\hat{e}_i$ is the residual of the $i$'th observation under the OLS estimate.  This is what R spits out when you run `summary(lm(y ~ ...))`.  Under homoskedasticity, this is an unbiased and consistent estimator of the true variance matrix.  With heteroskedasticity, however, $\hat{\Sigma}_{\text{OLS}}$ is biased and inconsistent.  If we go ahead and use it to calculate inferential statistics, our measures of uncertainty will be misleading.  Typically, we will too readily reject the null hypothesis---our reported $p$-values will be understated.
+
+To sum up, although heteroskedasticity doesn't cause much of a problem for the OLS estimate of $\beta$ itself, it does throw a wrench into our efforts to draw inferences about $\beta$ from the OLS estimate.  We are left with two options:
+
+1. Use an estimator other than OLS.
+2. Make a correction to the estimated standard errors that accounts for the possibility of heteroskedasticity.
+
+These correspond, respectively, to the cases when the heteroskedasticity is of *known* and *unknown* form.  But first we should know how to infer whether there's heteroskedasticity at all.
+
+
+## Detecting Heteroskedasticity
+
+In a bivariate regression model, you can usually detect heteroskedasticity via the eye test.  Not so much when you have multiple covariates.  In this case, you may want to formally test for heteroskedasticity.
+
+There are a few such tests, but we will just look at the *Breusch-Pagan test*, which was developed by @bp and refined by @kb.  The null hypothesis of the test is that $\sigma_i^2 = \sigma^2$ for all $i = 1, \ldots, N$.  The test procedure is as follows.
+
+1. Calculate the OLS estimate, $\hat{\beta}_{\text{OLS}}$.
+2. Calculate the OLS residuals, $\hat{e} = Y - \mathbf{X} \hat{\beta}_{\text{OLS}}$.  Let $\hat{u}$ be the vector of squared residuals, $\hat{u} = (\hat{e}_1^2, \ldots, \hat{e}_N^2)$.
+3. Run a regression of $\hat{u}$ on $\mathbf{Z}$, an $N \times q$ matrix of covariates.  Let $R_{\hat{u}}^2$ denote the $R^2$ of this regression.
+4. Reject the null hypothesis if $N R_{\hat{u}}^2$ exceeds the critical value for a $\chi_{q - 1}^2$ distribution.
+
+In the canonical version of this test, $\mathbf{Z}$ is equal to $\mathbf{X}$.  A more powerful version is the *White test* [@white], in which $\mathbf{Z}$ contains each variable in $\mathbf{X}$ as well as all second-order terms (squares and interactions).
+
+To illustrate this test---and our upcoming solutions---we will use data from the **car** package on professors' salaries.  This is a topic that, hopefully, you will come to care about rather much in 5ish years.
+
+```{r salary-data, message=FALSE, warning=FALSE}
+library("car")
+data(Salaries)
+head(Salaries)
+```
+
+There is an obvious source of heteroskedasticity here.  We should expect much more variation in the salaries of faculty who've been around for a while than for those fresh out of grad school.
+
+```{r salary-plot, fig.height=3.5, message=FALSE}
+library("ggplot2")
+
+ggplot(Salaries, aes(x = yrs.since.phd, y = salary)) +
+    geom_point()
+```
+
+Let's regress salary on years since PhD and years of service, and use the Breusch-Pagan test to confirm what we already know about heteroskedasticity.  We'll use the `bptest()` function from the [**lmtest**](https://cran.r-project.org/web/packages/lmtest/index.html) package.
+
+```{r bp-test, message=FALSE}
+ols_salaries <- lm(salary ~ yrs.since.phd + yrs.service,
+                   data = Salaries)
+summary(ols_salaries)
+
+library("lmtest")
+bptest(ols_salaries)
+```
+
+By default, `bptest()` uses the same variables as in the original regression in the regression of the squared residuals.  To perform the White test, we can use an extra argument to `bptest()` to specify a different model formula.
+
+```{r white-test}
+bptest(ols_salaries,
+       ~ yrs.since.phd * yrs.service + I(yrs.since.phd^2) + I(yrs.service^2),
+       data = Salaries)
+```
+
+In this case, regardless of which test we use, we reject the null hypothesis of homoskedasticity.
+
+
+## Heteroskedasticity of Known Form
+
+Suppose we know the form of $\Omega$ up to a multiplicative constant.  In other words, we know that the variance of each $\epsilon_i$ is proportional to some constant $\omega_i > 0$.  In this lucky circumstance, there is an efficient estimator of $\beta$ available to us---the *weighted least squares*, or WLS, estimator.
+
+The principle behind WLS is that observations with lower residual variance should receive more weight in the estimation of $\beta$.  The more that each response observation $Y_i$ is expected to deviate from the true regression line, the less useful that observation is for estimating the slope of that line---the harder it is to separate the signal from the noise.
+
+Let us now formally define the WLS estimator.  We will collect the proportional variance of each error term in an $N \times 1$ vector, $\omega = (\omega_1, \ldots, \omega_N)$.  We will weight every observation by the inverse of the proportional standard deviation, dividing both the response and the covariates (including the constant term) by the corresponding $\sqrt{\omega_i}$.  Then we will run OLS on the weighted data.  Formally, the estimator is
+$$
+\hat{\beta}_{\text{WLS}} (Y, \mathbf{X}, \omega)
+=
+\hat{\beta}_{\text{OLS}} \left(
+\begin{bmatrix}
+Y_1 / \sqrt{\omega_1} \\
+Y_2 / \sqrt{\omega_2} \\
+\vdots \\
+Y_N / \sqrt{\omega_N}
+\end{bmatrix},
+\begin{bmatrix}
+x_{11} / \sqrt{\omega_1} & x_{12} / \sqrt{\omega_1} & \cdots & x_{1p} / \sqrt{\omega_1} \\
+x_{21} / \sqrt{\omega_2} & x_{22} / \sqrt{\omega_2} & \cdots & x_{2p} / \sqrt{\omega_2} \\
+\vdots & \vdots & \ddots & \vdots \\
+x_{N1} / \sqrt{\omega_N} & x_{N2} / \sqrt{\omega_N} & \cdots & x_{Np} / \sqrt{\omega_N}
+\end{bmatrix}
+\right)
+$$
+It turns out this is equivalent to
+$$
+\hat{\beta}_{\text{WLS}} (Y, \mathbf{X}, \omega)
+=
+(\mathbf{X}^\top \Omega^{-1} \mathbf{X})^{-1} \mathbf{X}^\top \Omega^{-1} Y,
+$$
+where $\Omega$, as before, is the matrix with $\omega$ along the diagonal and $0$ everywhere else.  Notice that OLS is a special case of WLS, with $\omega = (1, 1, \ldots, 1)$.  Just like OLS, WLS is unbiased and (under reasonable conditions) consistent, even if $\Omega$ is misspecified.  But if we have $\Omega$ right---and *only* if we have $\Omega$ right---then WLS is efficient in the class of linear unbiased estimators.  In addition, our estimated variance matrix,
+$$
+\hat{\Sigma}_{\text{WLS}} = \frac{\sum_{i=1}^N \hat{e}_i^2 / \omega_i}{N - p} (\mathbf{X}^\top \Omega^{-1} \mathbf{X})^{-1},
+$$
+is unbiased and consistent.
+
+As an example, let's run WLS on the professor salary data, under the assumption that the residual variance is proportional to years since PhD:
+$$
+V[\epsilon_i \,|\, x_i] = \sigma^2 \times (\text{Years Since PhD})_i.
+$$
+We can accomplish this using the `weights` argument of `lm()`.
+
+```{r check-wls, include=FALSE}
+X <- model.matrix(ols_salaries)
+Y <- Salaries$salary
+Omega <- diag(Salaries$yrs.since.phd)
+Omega_inv <- solve(Omega)
+solve(t(X) %*% Omega_inv %*% X) %*% t(X) %*% Omega_inv %*% Y
+```
+
+```{r wls-weights}
+wls_salaries <- lm(salary ~ yrs.since.phd + yrs.service,
+                   weights = 1 / yrs.since.phd,
+                   data = Salaries)
+summary(wls_salaries)
+```
+
+Compared to the OLS estimates, we now estimate a stronger relationship between years since the PhD and the expected value of a professor's salary.  In addition, we estimate a smaller coefficient on years of service, and would no longer reject the null hypothesis of no relationship.
+
+Are the WLS results better than the OLS results?  It depends---namely on whether our assumption that the residual variance is proportional to the number of years since PhD.  If our assumption is correct, then the WLS estimates are efficient and our estimated standard errors are valid.  But if we assumed incorrectly, then the coefficient estimates might be even less efficient than OLS, and the estimated standard errors might be even more biased.
+
+
+## Heteroskedasticity of Unknown Form
+
+Suppose we don't trust ourselves to conjure up the right proportional residual variances, the $\omega_i$s.[^fgls]  Then we do not have an efficient estimator of $\beta$.  We might be all right with that, but we would really like to have a good estimator for the standard errors of the OLS estimator, so that we can test hypotheses about the coefficients.  Happily, we can estimate the variance matrix of the OLS estimator consistently even in the presence of heteroskedasticity.
+
+[^fgls]: There is an in-between solution known as *feasible generalized least squares*, whereby we estimate $\Omega$ from the data.  We won't discuss FGLS in this course, but you can read about it in Wooldridge or virtually any other econometrics textbook.
+
+*White's heteroskedasticity-consistent estimator* [@white] of the variance matrix starts by forming a diagonal matrix out of the squared residuals,
+$$
+\hat{\mathbf{U}}
+=
+\begin{bmatrix}
+\hat{u}_1 & 0 & \cdots & 0 \\
+0 & \hat{u}_2 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \hat{u}_N
+\end{bmatrix}
+=
+\begin{bmatrix}
+\hat{e}_1^2 & 0 & \cdots & 0 \\
+0 & \hat{e}_2^2 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \hat{e}_N^2
+\end{bmatrix}
+$$
+This lets us form the "meat" of the "sandwich" that is White's estimator of $\Sigma = V[\hat{\beta}_{\text{OLS}} \,|\, \mathbf{X}]$:
+$$
+\hat{\Sigma}_{\text{HC}}
+=
+(\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \hat{\mathbf{U}} \mathbf{X} (\mathbf{X}^\top \mathbf{X})^{-1}.
+$$
+You know I love proofs, but I am not even going to attempt to prove that this consistently estimates the (asymptotic) variance matrix of $\hat{\beta}_{\text{OLS}}$.  See @greene [pp. 198--199] for a sketch of the proof.
+
+White's estimator is consistent but not unbiased, so we may want to apply a sort of bias correction in small samples.  A popular choice is the so-called "HC1" estimator, which corrects for the number of parameters estimated the same way the usual OLS variance estimator does:
+$$
+\hat{\Sigma}_{\text{HC1}} = \frac{N}{N - p} \hat{\Sigma}_{\text{HC}}
+$$
+In this scheme, the standard White estimator is called the "HC" or "HC0" estimator.  There are many other consistent estimators that apply some or other finite-sample correction; see @mw for the gory details.
+
+Because of its association with the `, robust` option in Stata, people sometimes call the White estimator of the standard errors "robust standard errors".  Don't do that.  In your own work, if you estimate and report heteroskedasticity-consistent standard errors, report that you use the @white estimator of the standard errors, and specify which variant (HC0, HC1, and so on).  Remember that your goal is to give others enough information to replicate your analysis even if they don't have your code---"robust standard errors" has too many interpretations to accomplish that.
+
+To calculate the White estimator and its friends in R, we use the `hccm()` function from the **car** package.[^vcovHC]
+
+[^vcovHC]: The `vcovHC()` function in the [**sandwich**](https://cran.r-project.org/web/packages/sandwich/index.html) package produces the same results but is a bit more flexible.  It can also be used for generalized linear models (e.g., logistic regression).
+
+```{r hccm}
+vcv0 <- hccm(ols_salaries, type = "hc0")
+vcv0
+```
+
+To create a "regression table" using our new "robust" standard errors, we can use the `coeftest()` function from the **lmtest** package.
+
+```{r hccm-coeftest}
+coeftest(ols_salaries)
+coeftest(ols_salaries, vcov = vcv0)
+```
+
+Just like ordinary regression tables, the ones made by `coeftest()` can be "swept" into data frames using the tools in **broom**:
+
+```{r hccm-broom}
+library("broom")
+tidy(coeftest(ols_salaries, vcov = vcv0))
+```
+
+You may also want to use the White-estimated standard errors to conduct Wald tests of linear hypotheses.  You can do that by supplying the relevant estimated variance matrix to the `vcov` argument of `linearHypothesis()`:
+
+```{r hccm-linearHypothesis}
+linearHypothesis(ols_salaries,
+                 c("yrs.since.phd = 1500"),
+                 vcov = vcv0,
+                 test = "Chisq")
+```
+
+Finally, remember how earlier we talked about how the WLS estimates are only as good as the weights you choose.  If they're not the true weights, then WLS is not efficient and the standard error estimator is inconsistent.  We can't fix the first problem, but we can fix the second.  To wit, you can estimate heteroskedasticity-consistent standard errors for WLS models too.
+
+```{r hccm-wls}
+vcv0_wls <- hccm(wls_salaries, type = "hc0")
+coeftest(wls_salaries, vcov = vcv0_wls)
+```
+
+So if you have a good idea about the residual variances but aren't sure you've nailed it down, you can have the best of both worlds---at least in terms of large-sample hypothesis testing.
+
+
+## Summary
+
+* Heteroskedasticity doesn't affect the properties of the OLS estimator of $\beta$ very much.
+* But it does cause inefficiency and, even worse, break the ordinary estimator of the standard errors of $\hat{\beta}_{\text{OLS}}$.
+* If we know the form of the heteroskedasticity, we can fix both of these problems with WLS.
+* If we don't know the form of the heteroskedasticity, we can at least consistently estimate the standard errors of $\hat{\beta}_{\text{OLS}}$ via White's estimator.
+
+
+## References
