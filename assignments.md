@@ -44,3 +44,10 @@ Due in class on Thursday, February 18.
 
 * Instructions [(PDF)]({{site.baseurl}}/hw/04-specification/README.pdf) [(HTML)]({{site.baseurl}}/hw/04-specification/README.html)
 
+
+## 5. Non-Constant Variance
+
+Due in class on Thursday, February 25.
+
+* Instructions [(PDF)]({{site.baseurl}}/hw/05-ncv/README.pdf) [(HTML)]({{site.baseurl}}/hw/05-ncv/README.html)
+
