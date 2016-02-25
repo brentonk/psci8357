@@ -51,3 +51,8 @@ Due in class on Thursday, February 25.
 
 * Instructions [(PDF)]({{site.baseurl}}/hw/05-ncv/README.pdf) [(HTML)]({{site.baseurl}}/hw/05-ncv/README.html)
 
+
+## Final Paper
+
+* Instructions [(PDF)]({{site.baseurl}}/hw/final-paper/README.pdf) [(HTML)]({{site.baseurl}}/hw/final-paper/README.html)
+
