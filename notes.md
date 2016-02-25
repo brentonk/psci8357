@@ -37,3 +37,9 @@ You can find the R Markdown source for all of the notes in the `notes/` subdirec
 
 * [PDF]({{site.baseurl}}/notes/05-ncv.pdf)
 * [HTML]({{site.baseurl}}/notes/05-ncv.html)
+
+## A Detour into Nonlinear Models (for Binary Response Variables)
+*February 25, 2016*
+
+* [PDF]({{site.baseurl}}/notes/06-nonlin.pdf)
+* [HTML]({{site.baseurl}}/notes/06-nonlin.html)
