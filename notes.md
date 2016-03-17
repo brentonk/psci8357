@@ -43,3 +43,9 @@ You can find the R Markdown source for all of the notes in the `notes/` subdirec
 
 * [PDF]({{site.baseurl}}/notes/06-nonlin.pdf)
 * [HTML]({{site.baseurl}}/notes/06-nonlin.html)
+
+## Clustered and Panel Data
+*March 17, 2016*
+
+* [PDF]({{site.baseurl}}/notes/07-panel.pdf)
+* [HTML]({{site.baseurl}}/notes/07-panel.html)

@@ -52,6 +52,13 @@ Due in class on Thursday, February 25.
 * Instructions [(PDF)]({{site.baseurl}}/hw/05-ncv/README.pdf) [(HTML)]({{site.baseurl}}/hw/05-ncv/README.html)
 
 
+## 6. Panel Data
+
+Due in class on Thursday, March 24.
+
+* Instructions [(PDF)]({{site.baseurl}}/hw/06-panel/README.pdf) [(HTML)]({{site.baseurl}}/hw/06-panel/README.html)
+
+
 ## Final Paper
 
 * Instructions [(PDF)]({{site.baseurl}}/hw/final-paper/README.pdf) [(HTML)]({{site.baseurl}}/hw/final-paper/README.html)
