@@ -27,3 +27,6 @@ datastyle.pdf
 
 # Homework makefiles (since they won't work right without answers sources anyway)
 /hw/*/Makefile
+
+# Exams
+/exams/
