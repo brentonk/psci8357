@@ -254,7 +254,7 @@ $$
 $$
 Remember we assumed that the only path between smoking and cancer was through tar buildup.  So in our model where we control for the post-treatment factor, we would yield a coefficient close to 0 on smoking and conclude, absurdly, that smoking does not cause cancer.  Ergo, via proof by extreme example, we should not control for post-treatment variables.
 
-Reviewers will tell you to control for post-treatment variables.  Don't do tit (and cite Rosenbaum as your reason not to).  You will read papers that control for post-treatment variables.  Don't believe their results.  Their authors will say, yeah, but post-treatment bias shrinks the estimated effect and just makes it harder to pass the significance test; I passed the significance test anyway so my hypothesis must be right!  Tell them, no, post-treatment bias is not necessarily conservative (<http://cyrussamii.com/?p=730>) and then ask them why they're more interested in getting stars than accurately estimating the causal effect of their treatment.
+Reviewers will tell you to control for post-treatment variables.  Don't do it (and cite Rosenbaum as your reason not to).  You will read papers that control for post-treatment variables.  Don't believe their results.  Their authors will say, yeah, but post-treatment bias shrinks the estimated effect and just makes it harder to pass the significance test; I passed the significance test anyway so my hypothesis must be right!  Tell them, no, post-treatment bias is not necessarily conservative (<http://cyrussamii.com/?p=730>) and then ask them why they're more interested in getting stars than accurately estimating the causal effect of their treatment.
 
 
 ## Summary
