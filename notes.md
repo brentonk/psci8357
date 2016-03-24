@@ -49,3 +49,9 @@ You can find the R Markdown source for all of the notes in the `notes/` subdirec
 
 * [PDF]({{site.baseurl}}/notes/07-panel.pdf)
 * [HTML]({{site.baseurl}}/notes/07-panel.html)
+
+## Introduction to Causal Inference
+*March 24, 2016*
+
+* [PDF]({{site.baseurl}}/notes/08-causal.pdf)
+* [HTML]({{site.baseurl}}/notes/08-causal.html)
