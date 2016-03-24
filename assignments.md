@@ -59,6 +59,13 @@ Due in class on Thursday, March 24.
 * Instructions [(PDF)]({{site.baseurl}}/hw/06-panel/README.pdf) [(HTML)]({{site.baseurl}}/hw/06-panel/README.html)
 
 
+## 7. Causal Inference
+
+Due in class on Thursday, March 31.
+
+* Instructions [(PDF)]({{site.baseurl}}/hw/07-causal/README.pdf) [(HTML)]({{site.baseurl}}/hw/07-causal/README.html)
+
+
 ## Final Paper
 
 * Instructions [(PDF)]({{site.baseurl}}/hw/final-paper/README.pdf) [(HTML)]({{site.baseurl}}/hw/final-paper/README.html)
