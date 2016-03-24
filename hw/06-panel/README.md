@@ -29,13 +29,15 @@ This week's assignment is the third and last in a trio using the @neumayer data.
 
     1. For each cluster $i = 1, \ldots, N$, calculate the estimated coefficients $\hat{\beta}^{(-i)}$ by running OLS on all the observations except those in cluster $i$.  Save only the $j$'th term of the estimated coefficients, $\hat{\beta}_{j}^{(-i)}$.
 
-    2. Estimate the variance of $\hat{\beta}_j$ via the formula $$\hat{V}[\hat{\beta}_j] = \frac{N-p}{N} \sum_{i=1}^N (\hat{\beta}_{j}^{(-i)} - \hat{\beta}_j)^2,$$ where $p$ is the number of terms in the model (including the intercept).
+    2. Calculate the jackknife estimate of $\beta_j$ via the formula $$\bar{\beta}_{j} = \frac{1}{N} \sum_{i=1}^N \hat{\beta}_j^{(-i)}.$$
 
-    3. Estimate the standard error of $\beta_j$ as $\sqrt{\hat{V}[\beta_j]}$.
+    3. Estimate the variance of $\hat{\beta}_j$ via the formula $$\hat{V}[\hat{\beta}_j] = \frac{N-p}{N} \sum_{i=1}^N (\hat{\beta}_{j}^{(-i)} - \bar{\beta}_j)^2,$$ where $p$ is the number of terms in the model (including the intercept).
+
+    4. Estimate the standard error of $\beta_j$ as $\sqrt{\hat{V}[\beta_j]}$.
 
     Compare the cluster jackknife estimate of the standard error to the original OLS estimate of the standard error and the cluster-robust estimate of the standard error.  Which is it closer to?
 
-    If you are feeling especially ambitious, you may choose to obtain the cluster jackknife estimate of the variance of $\hat{\beta}$ as a whole (not just a single term).  In this case the appropriate formula would be $$\hat{V}[\hat{\beta}] = \frac{N-p}{N} \sum_{i=1}^N (\hat{\beta}^{(-i)} - \hat{\beta}) (\hat{\beta}^{(-i)} - \hat{\beta})^\top.$$
+    If you are feeling especially ambitious, you may choose to obtain the cluster jackknife estimate of the variance of $\hat{\beta}$ as a whole (not just a single term).  In this case the appropriate formulas would be $$\bar{\beta} = \frac{1}{N} \sum_{i=1}^N \hat{\beta}^{(-i)}$$ and $$\hat{V}[\hat{\beta}] = \frac{N-p}{N} \sum_{i=1}^N (\hat{\beta}^{(-i)} - \bar{\beta}) (\hat{\beta}^{(-i)} - \bar{\beta})^\top.$$
 
 
 ## References
