@@ -177,7 +177,7 @@ To define the subclassification estimator, suppose there are finitely many combi
 $$
 \hat{\tau}
 =
-\sum_{k=1}^K \frac{1}{N_{k0} + N_{k1}} \left(
+\sum_{k=1}^K \frac{N_{k0} + N_{k1}}{N} \left(
 \frac{\sum_{i : X_i = x_k, T_i = 1} Y_i}{N_{k1}} - \frac{\sum_{i : X_i = x_k, T_i = 0} Y_i}{N_{k0}}
 \right).
 $$
