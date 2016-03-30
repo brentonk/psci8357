@@ -55,3 +55,9 @@ You can find the R Markdown source for all of the notes in the `notes/` subdirec
 
 * [PDF]({{site.baseurl}}/notes/08-causal.pdf)
 * [HTML]({{site.baseurl}}/notes/08-causal.html)
+
+## Instrumental Variables
+*March 31, 2016*
+
+* [PDF]({{site.baseurl}}/notes/09-instruments.pdf)
+* [HTML]({{site.baseurl}}/notes/09-instruments.html)
