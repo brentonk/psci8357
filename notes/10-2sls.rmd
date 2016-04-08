@@ -1,0 +1,199 @@
+---
+title: "Two-Stage Least Squares"
+author: "Brenton Kenkel --- PSCI 8357"
+date: "April 7, 2016"
+bibliography: ref-common.bib
+---
+
+```{r setup, include=FALSE}
+options(width = 70, digits = 3)
+knitr::opts_chunk$set(fig.width = 5, fig.height = 4, fig.align = "center")
+```
+
+Last time, we learned the basics of instrumental variables but left many questions unanswered.
+
+* What if we observe some of the confounding factors and wish to control for them?
+
+* What if we have more than one variable that is correlated with the error term?
+
+* What if we have more than one instrumental variable?
+
+Today we will talk about *two-stage least squares*, a general-purpose instrumental variables estimator that can handle all of these situations.  Like last time, these notes draw from @Angrist:2009vk [chapter 4] and @Angrist:2015tg [chapter 4].
+
+
+## The Estimator
+
+If you guessed that an estimator called "two-stage least squares" would involve running OLS two times, pat yourself on the back---you're right!  Assume we want to estimate the coefficients of the linear model
+$$
+Y_i = \beta_0 + \beta_1 X_{1i} + \cdots + \beta_p X_{pi} + \epsilon_i,
+$$
+but some of the variables $X_{ji}$ are correlated with the error term.  OLS estimation of this equation will be biased and inconsistent, as we have already seen.
+
+Suppose that we have a collection of $q > p$ instruments, $Z_{1i}, \ldots, Z_{qi}$, where each satisfies the following conditions:
+
+1. First stage: $Z$ affects $X$.
+2. Independence: $Z$ is uncorrelated with $\epsilon$.
+3. Exclusion restriction: $Z$ only affects $Y$ through its effect on $X$.
+
+Under these conditions, any exogenous $X$ variable (i.e., any that is uncorrelated with the error term) can be included in $Z$.  Then we just need at least one additional instrument per endogenous variable.  We call the instruments that are not themselves covariates the *excluded instruments*, for reasons that will become clear momentarily.
+
+The *two-stage least squares estimator* of $\beta$ is the following procedure:
+
+1. Regress each $X_j$ on $Z$ and save the predicted values, $\hat{X}_j$.  If $X_j$ is included in $Z$, we will have $\hat{X}_j = X_j$.
+
+2. Estimate $\beta$ via the OLS estimate of the regression model $$Y_i = \beta_0 + \beta_1 \hat{X}_{1i} + \cdots + \beta_p \hat{X}_{pi} + \epsilon_i.$$
+
+This is obviously easy to implement, and it allows us to incorporate exogenous covariates, multiple endogenous variables, and more instruments than endogenous variables (also called overidentifying restrictions).
+
+Fun fact: letting $\mathbf{X}$ be the $N \times p$ matrix of covariates and $\mathbf{Z}$ be the $N \times q$ matrix of instruments, the instrumental variables estimator can be calculated in a single step via the equation @Greene:2003ux [page 78]
+$$
+\hat{\beta}_{\text{2SLS}}(Y, \mathbf{X}, \mathbf{Z})
+=
+[\mathbf{X}^\top \mathbf{Z} (\mathbf{Z}^\top \mathbf{Z})^{-1} \mathbf{Z}^\top \mathbf{X}]^{-1} \mathbf{X}^\top \mathbf{Z} (\mathbf{Z}^\top \mathbf{Z})^{-1} \mathbf{Z}^\top Y.
+$$
+This is the GLS estimator with $\Omega = [\mathbf{Z} (\mathbf{Z}^\top \mathbf{Z})^{-1} \mathbf{Z}^\top]^{-1}$.  In practice, though, you won't directly carry out either two-stage least squares or the GLS formula---you'll feed the covariates and the instruments to the computer and let it do the work for you.
+
+
+## The Intuition
+
+Remember from last time our basic recipe,
+$$
+\text{effect of $T_i$ on $Y_i$}
+=
+\frac{\text{effect of $Z_i$ on $Y_i$}}{\text{effect of $Z_i$ on $T_i$}}
+$$
+If the instrument and the treatment are both binary, then the instrumental variables estimator of the average treatment effect is a ratio of differences of means:
+$$
+\hat{\tau}_{\text{IV}}
+=
+\frac{\bar{Y}_{Z = 1} - \bar{Y}_{Z = 0}}{\bar{T}_{Z = 1} - \bar{T}_{Z = 0}}.
+$$
+Our goal now is to see that two-stage least squares gives us the same answer.
+
+Consider the first-stage regression,
+$$
+T_i = \gamma_0 + \gamma_1 Z_i + \eta_i.
+$$
+You know from your previous adventures with regression that the OLS estimates will be $\hat{\gamma}_0 = \bar{T}_{Z = 0}$ and $\hat{\gamma}_1 = \bar{T}_{Z = 1} - \bar{T}_{Z = 0}$.  The predicted values will therefore be
+$$
+\hat{T}_i = \bar{T}_{Z = 0} + (\bar{T}_{Z = 1} - \bar{T}_{Z = 0}) Z_i.
+$$
+
+Now suppose we run the second-stage regression,
+$$
+Y_i = \alpha_0 + \alpha_1 \hat{T}_i + \epsilon_i.
+$$
+Our ultimate goal is to show that the estimated coefficient on $\hat{T}_i$ is identical to the IV estimate of the average treatment effect: $\hat{\alpha}_1 = \hat{\tau}_{\text{IV}}$.  We can rewrite the second-stage regression as
+$$
+\begin{aligned}
+Y_i &= \alpha_0 + \alpha_1 \hat{T}_i + \epsilon_i
+\\
+&= \alpha_0 + \alpha_1 (\bar{T}_{Z = 0} + (\bar{T}_{Z = 1} - \bar{T}_{Z = 0}) Z_i) + \epsilon_i
+\\
+&=
+\underbrace{\alpha_0 + \alpha_1 \bar{T}_{Z = 0}}_{\kappa_0} + \underbrace{\alpha_1 (\bar{T}_{Z = 1} - \bar{T}_{Z = 0})}_{\kappa_1} Z_i + \epsilon_i
+\\
+&=
+\kappa_0 + \kappa_1 Z_i + \epsilon_i.
+\end{aligned}
+$$
+We know that the OLS estimation of the final equation will give us $\hat{\kappa}_1 = \bar{Y}_{Z = 1} - \bar{Y}_{Z = 0}$.  Therefore, the OLS estimation of the first equation gives us
+$$
+\hat{\alpha}_1
+=
+\frac{\hat{\kappa}_1}{\bar{T}_{Z = 1} - \bar{T}_{Z = 0}}
+=
+\frac{\bar{Y}_{Z = 1} - \bar{Y}_{Z = 0}}{\bar{T}_{Z = 1} - \bar{T}_{Z = 0}}
+=
+\hat{\tau}_{\text{IV}},
+$$
+as we wanted.
+
+
+## Standard Errors
+
+Although it is useful to think of the instrumental variables estimator as two-stage least squares, in practice you should not run two separate regression models.  One reason why not is that the nominal standard errors for $\beta$ in the second-stage regression will be wrong.  Instead of running two-stage least squares "by hand", use a command like `ivregress` in Stata or `ivreg()` in the **AER** package in R.
+
+Heteroskedasticity, autocorrelation, and clustering are just as problematic for estimating the standard errors of 2SLS as they are for OLS.  Luckily, we can use the same Huber-White corrections as we did for OLS.
+
+
+## Instrument Selection and the Bias-Variance Tradeoff
+
+Most commonly, instrumental variables are a scarce resource.  An applied analyst is far more likely to worry about having too few instruments than too many.  Suppose, however, you were to find yourself with an abundance of instruments.  How should you proceed?  There are two related principles to keep in mind.
+
+* There is a bias-variance tradeoff: holding your sample size fixed, an additional instrument usually reduces your standard error but increases the bias.  Since the bias vanishes asymptotically, you may think this is not a problem in very large samples, but you would be wrong [@Bound:1995bx].
+
+    An informal way to see why this is true is to think about how the 2SLS estimator is constructed.  The more instruments we have, the closer the predicted values of the endogenous regressors get to the true values.  (Remember that adding a covariate to a regression model always increases the $R^2$.)  With enough instruments, the predicted values are approximately the true values, which means 2SLS is approximately OLS.  Since OLS is inconsistent under the assumption of endogeneity, this is not a good thing.
+
+* Weak instruments increase the bias more than they reduce the variance.
+
+Two strong instruments are better than ten weak instruments.  It is harder to say whether one weak instrument is better than two weak instruments, or whether OLS might be better than 2SLS if every instrument is weak.  It depends on the sample size, the magnitude of the weakness of the instruments, and the plausibility of the independence and exclusion restrictions.  When you only have weak instruments available, you should not stake strong claims on a single specification.  The best you can hope for is to have a result that is robust across different permutations of instruments.
+
+For a model with a single endogenous variable, the usual rule of thumb is that the $F$-statistic of the regression of the endogenous variable on the excluded instruments should be at least 10 [@Stock:2002ft].
+
+
+## Appendix: Implementation
+
+There are a few different implementations of 2SLS in R.  We will use the one from the **AER** package.
+
+```{r pkg, message=FALSE}
+library("AER")
+```
+
+We will reproduce columns 3 and 4 of Table IV in @Angrist:1991bq.  First, load up the data.
+
+```{r data}
+AK <- read.csv("AK1991-clean.csv")
+head(AK)
+```
+
+The response is `wage`.  The (endogenous) treatment variable is `educ`.  The (exogenous) covariates are `age`, `age` squared, and `year` dummies.  The excluded instruments are interactions of the `year` dummies with `quarter` dummies.
+
+OLS is the same as it ever was.
+
+```{r ols}
+fit_ols <- lm(wage ~ educ + age + I(age^2) + factor(year),
+              data = AK)
+summary(fit_ols)
+```
+
+It is instructive to run 2SLS by hand, even though we should rely on canned procedures in our published work.
+
+```{r by-hand}
+X <- model.matrix(~ educ + age + I(age^2) + factor(year),
+                  data = AK)
+Z <- model.matrix(~ age + I(age^2) + factor(year) * factor(quarter),
+                  data = AK)
+Y <- AK$wage
+
+ols_first <- lm(X ~ Z)
+X_hat <- fitted(ols_first)
+ols_second <- lm(Y ~ X_hat)
+coef(ols_second)
+```
+
+The canned procedure is the `ivreg()` function.  It works like `lm()`, except the model formula is in the form `y ~ x1 + x2 + ... | z1 + z2 + ...`, where the `x` terms are the variables whose coefficients we want to estimate and the `z` terms are the instruments.  Any exogenous covariates should be included in both parts of the formula, as in the example below.
+
+```{r iv}
+fit_iv <- ivreg(wage ~ educ + age + I(age^2) + factor(year) |
+                    age + I(age^2) + factor(year) * factor(quarter),
+                data = AK)
+summary(fit_iv)
+```
+
+If you want heteroskedasticity-consistent standard errors, you can use the `vcovHC()` function.  Unfortunately, the dataset here is so big that it crashes the function, at least on my computer.  So let's take a subsample of the data, run 2SLS on it, and then calculate the HC1 estimator of the standard errors.
+
+```{r hccm}
+set.seed(14)
+AK_sample <- AK[sample(1:nrow(AK), 10000), ]
+fit_iv_sample <- update(fit_iv,
+                        data = AK_sample)
+summary(fit_iv_sample)
+summary(fit_iv_sample,
+        vcov = vcovHC(fit_iv_sample, type = "HC1"))
+```
+
+What if you have panel data?  You can get instrumental variables estimates with fixed effects and/or clustered standard errors through `plm()`, by using the same kind of two-part formula that `ivreg()` takes.
+
+
+## References

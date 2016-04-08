@@ -61,3 +61,9 @@ You can find the R Markdown source for all of the notes in the `notes/` subdirec
 
 * [PDF]({{site.baseurl}}/notes/09-instruments.pdf)
 * [HTML]({{site.baseurl}}/notes/09-instruments.html)
+
+## Two-Stage Least Squares
+*April 7, 2016*
+
+* [PDF]({{site.baseurl}}/notes/10-2sls.pdf)
+* [HTML]({{site.baseurl}}/notes/10-2sls.html)
