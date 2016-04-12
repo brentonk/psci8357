@@ -67,3 +67,9 @@ You can find the R Markdown source for all of the notes in the `notes/` subdirec
 
 * [PDF]({{site.baseurl}}/notes/10-2sls.pdf)
 * [HTML]({{site.baseurl}}/notes/10-2sls.html)
+
+## Regression and Prediction
+*April 14, 2016*
+
+* [PDF]({{site.baseurl}}/notes/11-prediction.pdf)
+* [HTML]({{site.baseurl}}/notes/11-prediction.html)
