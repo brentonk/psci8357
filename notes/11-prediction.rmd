@@ -73,7 +73,7 @@ Y_i = \beta_0 + \sum_{k=1}^d \beta_k X_i^k + \epsilon_i.
 $$
 Do we want a linear model?  A quadratic model?  Something even higher-order?  Let's look at the results of fitting $d$th-order polynomials for $d = 1, \ldots, 9$.
 
-```{r plot-fit, echo=FALSE}
+```{r plot-fit, echo=FALSE, fig.width = 5.5}
 ggplot(plot_data, aes(x = x, y = y)) +
     geom_point() +
     geom_line(aes(y = prediction)) +
