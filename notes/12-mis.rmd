@@ -1,0 +1,91 @@
+---
+title: "Missing Data"
+author: "Brenton Kenkel --- PSCI 8357"
+date: "April 21, 2016"
+bibliography: ref-common.bib
+---
+
+```{r setup, include=FALSE}
+options(width = 70, digits = 3)
+knitr::opts_chunk$set(fig.width = 5, fig.height = 4, fig.align = "center")
+```
+
+```{r pkg, echo=FALSE, message=FALSE}
+library("broom")
+library("dplyr")
+library("foreach")
+library("ggplot2")
+library("tidyr")
+```
+
+```{r make-data, echo=FALSE}
+sim_data <- function(n) {
+    x1 <- rnorm(n)
+    x2 <- x1 + rnorm(n, sd = 0.5)
+    y <- 1 + x1 + x2 + rnorm(n)
+
+    MCAR <- rbinom(n, 1, 0.5)
+    MAR <- rbinom(n, 1, pnorm(x1))
+    NI <- rbinom(n, 1, pnorm(x2))
+
+    data_frame(y, x1, x2, Complete = 0, MCAR, MAR, NI) %>%
+        gather(type, missing, Complete:NI)
+}
+```
+
+## Varieties of Missingness
+
+```{r plot-data, echo=FALSE, fig.width=5.5, fig.height=5.25, fig.pos="p", fig.cap="Illustration of data that are complete, missing completely at random (MCAR), missing at random (MAR), and nonignorably missing (NI)."}
+set.seed(74)
+
+plot_data <- sim_data(100)
+
+ggplot(plot_data, aes(x1, x2)) +
+    geom_point(aes(fill = factor(missing)),
+               pch = 21,
+               show_guide = FALSE) +
+    scale_fill_manual(values = c("0" = "black", "1" = "white")) +
+    facet_wrap(~ type)
+```
+
+```{r mc-listwise, cache=TRUE}
+mc_listwise <- foreach(i = 1:1000, .combine = "rbind") %do% {
+    dat <- sim_data(100) %>%
+        mutate(x2 = ifelse(missing == 1, NA, x2))
+    cf <- do(dat %>% group_by(type),
+             lm(y ~ x1 + x2, data = .) %>% tidy())
+    cf
+}
+
+mc_listwise %>%
+    group_by(type, term) %>%
+    summarise(mean = mean(estimate),
+              se_true = sd(estimate),
+              se_nominal = mean(std.error)) %>%
+    mutate_each(funs(round(., 2)), -type, -term)
+```
+
+```{r mc-single, cache=TRUE}
+mc_single <- foreach(i = 1:1000, .combine = "rbind") %do% {
+    dat <- sim_data(100) %>%
+        mutate(x2 = ifelse(missing == 1, NA, x2))
+    
+    cf <- do(dat %>% group_by(type), {
+        x2_fit <- lm(x2 ~ x1, data = .)
+        x2_pred <- predict(x2_fit, newdata = .)
+        .$x2 <- ifelse(is.na(.$x2), x2_pred, .$x2)
+        y_fit <- lm(y ~ x1 + x2, data = .)
+        tidy(y_fit)
+    })
+}
+
+mc_single %>%
+    group_by(type, term) %>%
+    summarise(mean = mean(estimate),
+              se_true = sd(estimate),
+              se_nominal = mean(std.error)) %>%
+    mutate_each(funs(round(., 2)), -type, -term)
+```
+
+
+## References
